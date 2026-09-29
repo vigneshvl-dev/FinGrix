@@ -5,7 +5,7 @@ import { useInvestigation } from '../context/InvestigationContext';
 const css = `
 @import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap');
 .su *{box-sizing:border-box;margin:0}
-.su{min-height:100vh;background:#111;display:flex;align-items:center;justify-content:center;padding:24px;font-family:'Manrope',system-ui,sans-serif;color:#f2f2f2}
+.su{min-height:100vh;background:#111;display:flex;align-items:center;justify-content:center;padding:24px;font-family:'Gibson','Manrope',system-ui,sans-serif;color:#f2f2f2}
 .su-wrap{display:grid;grid-template-columns:405px 1fr;gap:12px;width:100%;max-width:980px;height:605px}
 .su-card{background:#161616;border:1px solid #232323;border-radius:16px;display:flex;flex-direction:column;align-items:center;padding:40px 65px 0;position:relative}
 .su-logo{width:25px;height:25px;margin-bottom:36px;color:#e8e8e8}

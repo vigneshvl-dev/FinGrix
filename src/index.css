@@ -1,45 +1,100 @@
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 @layer base {
   :root {
-    --color-bg-page: #F7F9FC;
-    --color-surface: #FFFFFF;
-    --color-border: #D9E0E8;
-    --color-text-primary: #172033;
-    --color-text-secondary: #667085;
-    --color-brand: #1769E0;
+    --color-bg-page: #0A0D14;
+    --color-surface: #12161F;
+    --color-border: #232B38;
+    --color-text-primary: #FFFFFF;
+    --color-text-secondary: #9CA3AF;
+    --color-brand: #2563EB;
+    color-scheme: dark;
   }
 
   body {
-    background-color: #F7F9FC;
-    color: #172033;
-    font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background-color: #0A0D14;
+    color: #FFFFFF;
+    font-family: 'Gibson', 'Plus Jakarta Sans', 'Inter', system-ui, -apple-system, sans-serif;
     letter-spacing: -0.011em;
   }
 
-  /* Clean subtle enterprise scrollbar */
+  /* Force dark theme replacements for legacy white utility classes */
+  .bg-white {
+    background-color: #12161F !important;
+  }
+  .bg-surface {
+    background-color: #12161F !important;
+  }
+  .bg-surface-secondary {
+    background-color: #181E29 !important;
+  }
+  .hover\:bg-surface-secondary:hover {
+    background-color: #1F2635 !important;
+  }
+  .bg-page {
+    background-color: #0A0D14 !important;
+  }
+  .bg-\[\#F7F9FC\], .bg-\[\#F5F7FA\], .bg-\[\#F8FAFC\] {
+    background-color: #0A0D14 !important;
+  }
+  .bg-\[\#FFFFFF\] {
+    background-color: #12161F !important;
+  }
+
+  /* Force white/crisp text color for legacy dark text classes */
+  .text-text-primary, .text-\[\#172033\], .text-\[\#101828\], .text-\[\#344054\] {
+    color: #FFFFFF !important;
+  }
+  .text-text-secondary, .text-\[\#667085\] {
+    color: #9CA3AF !important;
+  }
+  .text-text-muted, .text-\[\#94A3B8\], .text-\[\#475467\] {
+    color: #6B7280 !important;
+  }
+
+  /* Borders */
+  .border-border, .border-\[\#D9E0E8\], .border-\[\#D0D5DD\], .border-\[\#DDE3EA\], .border-\[\#E5EAF0\] {
+    border-color: #232B38 !important;
+  }
+
+  input, select, textarea {
+    color-scheme: dark;
+  }
+
+  /* Clean subtle enterprise dark scrollbar */
   ::-webkit-scrollbar {
     width: 6px;
     height: 6px;
   }
   ::-webkit-scrollbar-track {
-    background: #F1F4F8;
+    background: #0A0D14;
   }
   ::-webkit-scrollbar-thumb {
-    background: #CBD5E1;
+    background: #232B38;
     border-radius: 3px;
   }
   ::-webkit-scrollbar-thumb:hover {
-    background: #94A3B8;
+    background: #374151;
   }
 }
 
 @layer utilities {
+  .text-gibson {
+    color: #FFFFFF !important;
+    font-family: 'Gibson', 'Plus Jakarta Sans', 'Inter', system-ui, sans-serif !important;
+  }
+
+  .font-gibson {
+    font-family: 'Gibson', 'Plus Jakarta Sans', 'Inter', system-ui, sans-serif !important;
+  }
+
   .graph-canvas-bg {
-    background-color: #F8FAFC;
-    background-image: radial-gradient(#CBD5E1 1px, transparent 1px);
+    background-color: #0B0E17;
+    background-image: radial-gradient(#232B38 1px, transparent 1px);
     background-size: 20px 20px;
   }
 
