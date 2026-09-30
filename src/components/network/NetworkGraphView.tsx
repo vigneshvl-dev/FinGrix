@@ -1,8 +1,6 @@
 import React, { useMemo, useCallback } from 'react';
 import {
   ReactFlow,
-  MiniMap,
-  Controls,
   Background,
   BackgroundVariant,
   Node,
@@ -230,22 +228,7 @@ const NetworkGraphInternal: React.FC = () => {
           variant={BackgroundVariant.Dots} 
         />
         
-        {/* Subtle controls */}
-        <Controls 
-          className="!bg-white !border !border-border !rounded !shadow-sm !text-text-primary overflow-hidden" 
-          showInteractive={false}
-        />
 
-        <MiniMap
-          nodeColor={(n) => {
-            if (n.id === selectedAccount?.id) return '#1769E0';
-            return '#CBD5E1';
-          }}
-          maskColor="rgba(248, 250, 252, 0.7)"
-          className="!bg-white !border !border-border !rounded"
-          zoomable
-          pannable
-        />
       </ReactFlow>
 
       {/* Clean Trace Flow & Canvas Counter */}
