@@ -7,7 +7,8 @@ import {
   Share2, 
   Clock, 
   FileText,
-  Filter
+  Filter,
+  Sparkles
 } from 'lucide-react';
 import { useInvestigation } from '../../context/InvestigationContext';
 import { useNavigate } from 'react-router-dom';
@@ -109,44 +110,63 @@ export const GuidedTourModal: React.FC = () => {
   };
 
   return (
-    <div className="fixed inset-0 z-50 bg-black/40 backdrop-blur-xs flex items-center justify-center p-4 select-none">
-      <div className="bg-white border border-border w-full max-w-lg rounded-card shadow-modal overflow-hidden text-xs">
+    <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 select-none font-sans">
+      <div className="neu-card border border-white/10 w-full max-w-lg overflow-hidden text-xs shadow-[16px_16px_40px_rgba(0,0,0,0.85),-8px_-8px_24px_rgba(255,255,255,0.035)]">
         {/* Header */}
-        <div className="px-5 py-3.5 border-b border-border bg-surface-secondary flex items-center justify-between">
-          <div className="font-semibold text-text-primary text-xs uppercase tracking-wider">
-            Evaluation Walkthrough • Step {tourStep} of {steps.length}
+        <div className="px-5 py-4 border-b border-white/[0.06] bg-[#111724] flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <Sparkles className="w-4 h-4 text-blue-400" />
+            <span className="font-bold text-white text-xs uppercase tracking-wider font-mono">
+              Evaluation Walkthrough • Step {tourStep} of {steps.length}
+            </span>
           </div>
           <button 
             onClick={() => setGuidedTourOpen(false)}
-            className="text-text-muted hover:text-text-primary p-1 rounded"
+            className="neu-btn text-slate-400 hover:text-white p-1 rounded-lg cursor-pointer"
           >
             <X className="w-4 h-4" />
           </button>
         </div>
 
         {/* Content */}
-        <div className="p-6 space-y-4">
+        <div className="p-6 space-y-4 bg-[#0E131E]">
           <div>
-            <h2 className="text-base font-bold text-text-primary">{current.title}</h2>
-            <p className="text-xs font-medium text-brand mt-0.5">{current.subtitle}</p>
-            <p className="text-xs text-text-secondary mt-2.5 leading-relaxed">{current.desc}</p>
+            <h2 className="text-base font-bold text-white tracking-tight">{current.title}</h2>
+            <p className="text-xs font-semibold text-blue-400 mt-0.5">{current.subtitle}</p>
+            <p className="text-xs text-slate-300 mt-2.5 leading-relaxed">{current.desc}</p>
           </div>
 
-          <div className="p-3 rounded bg-surface-secondary border border-border">
-            <span className="text-[10px] uppercase font-semibold tracking-wider text-text-muted block">KEY FINDING:</span>
-            <span className="font-medium text-text-primary mt-0.5 block">{current.highlight}</span>
+          <div className="p-3.5 rounded-xl neu-inset-sm border border-white/5 space-y-1">
+            <span className="text-[10px] uppercase font-bold tracking-wider text-blue-400 block font-mono">
+              KEY FORENSIC FINDING:
+            </span>
+            <span className="font-medium text-white leading-snug block">{current.highlight}</span>
+          </div>
+
+          {/* Stepper Dots */}
+          <div className="flex items-center justify-center gap-2 pt-1">
+            {steps.map((s, idx) => (
+              <span
+                key={s.step}
+                className={`h-1.5 rounded-full transition-all ${
+                  idx === tourStep - 1
+                    ? 'w-6 bg-blue-500 shadow-[0_0_8px_rgba(59,130,246,0.8)]'
+                    : 'w-2 bg-slate-700'
+                }`}
+              />
+            ))}
           </div>
         </div>
 
         {/* Footer */}
-        <div className="px-5 py-3 border-t border-border bg-surface-secondary flex items-center justify-between">
+        <div className="px-5 py-3.5 border-t border-white/[0.06] bg-[#111724] flex items-center justify-between">
           <button
             onClick={handlePrev}
             disabled={tourStep === 1}
-            className={`px-3 py-1.5 rounded text-xs flex items-center gap-1 border border-border bg-white transition ${
+            className={`neu-btn px-3 py-1.5 rounded-xl text-xs flex items-center gap-1 cursor-pointer transition ${
               tourStep === 1 
-                ? 'opacity-40 cursor-not-allowed text-text-muted' 
-                : 'text-text-primary hover:bg-surface-secondary'
+                ? 'opacity-40 cursor-not-allowed text-slate-600' 
+                : 'text-slate-200 hover:text-white'
             }`}
           >
             <ArrowLeft className="w-3.5 h-3.5" />
@@ -156,15 +176,15 @@ export const GuidedTourModal: React.FC = () => {
           <div className="flex items-center gap-2">
             <button
               onClick={() => setGuidedTourOpen(false)}
-              className="px-3 py-1.5 rounded text-xs text-text-muted hover:text-text-primary"
+              className="px-3 py-1.5 rounded-xl text-xs text-slate-400 hover:text-white transition cursor-pointer"
             >
-              Close
+              Skip
             </button>
             <button
               onClick={handleNext}
-              className="px-3.5 py-1.5 rounded bg-brand hover:bg-brand-hover text-white text-xs font-semibold flex items-center gap-1.5 shadow-sm transition"
+              className="neu-btn-primary px-4 py-1.5 rounded-xl text-white text-xs font-semibold flex items-center gap-1.5 transition cursor-pointer shadow-[4px_4px_10px_rgba(0,0,0,0.6)]"
             >
-              <span>{tourStep === steps.length ? 'Finish' : current.actionText}</span>
+              <span>{tourStep === steps.length ? 'Complete Tour' : current.actionText}</span>
               <ArrowRight className="w-3.5 h-3.5" />
             </button>
           </div>
@@ -173,3 +193,5 @@ export const GuidedTourModal: React.FC = () => {
     </div>
   );
 };
+
+export default GuidedTourModal;

@@ -27,7 +27,8 @@ export type InstitutionName =
   | 'Axis Bank' 
   | 'Kotak Mahindra' 
   | 'Standard Chartered' 
-  | 'Federal Bank';
+  | 'Federal Bank'
+  | 'YES Bank';
 
 export interface AccountNode {
   id: string; // e.g. "ACC-1042"
@@ -51,6 +52,7 @@ export interface AccountNode {
   city: string;
   x?: number;
   y?: number;
+  nodeCategory?: 'account' | 'bank' | 'company';
 }
 
 export interface Transaction {
@@ -115,8 +117,8 @@ export interface ScenarioDefinition {
 }
 
 export interface InvestigationCase {
-  id: string; // e.g. "FG-2026-001"
-  networkId: string; // e.g. "NET-1042"
+  id: string; // e.g. "FG-2026-001" or "INV-2026-0173"
+  networkId: string; // e.g. "NET-1042" or "Network #173"
   title: string;
   scenarioType: ScenarioType;
   accountsCount: number;
@@ -151,6 +153,7 @@ export interface AlertItem {
 export interface CaseNote {
   id: string;
   author: string;
+  role?: string;
   timestamp: string;
   content: string;
   taggedEntities?: string[];
@@ -162,4 +165,29 @@ export interface InvestigatorQueryResponse {
   referencedTransactions?: string[];
   referencedAccounts?: string[];
   confidence: number;
+}
+
+export interface RawDatasetIngestionSummary {
+  id: string;
+  filename: string;
+  format: 'CSV' | 'JSON' | 'Excel' | 'API';
+  sizeBytes: string;
+  transactionsCount: number;
+  accountsCount: number;
+  institutionsCount: number;
+  suspiciousClustersDetected: number;
+  timestamp: string;
+  status: 'Ingested' | 'Validating' | 'Failed';
+}
+
+export interface BenignCommerceItem {
+  id: string;
+  entityName: string;
+  category: string;
+  monthlyVolume: number;
+  classification: 'Normal Commerce' | 'High-Volume Legitimate' | 'Unusual' | 'Suspicious';
+  reason: string;
+  counterpartiesCount: number;
+  settlementFrequency: string;
+  exemptionStatus: 'Exempt' | 'Under Observation';
 }

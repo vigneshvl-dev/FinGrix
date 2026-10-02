@@ -6,7 +6,10 @@ import {
   ChevronRight, 
   RotateCcw, 
   ArrowRight,
-  Clock
+  Clock,
+  TrendingUp,
+  Activity,
+  Zap
 } from 'lucide-react';
 import { 
   ResponsiveContainer, 
@@ -67,60 +70,61 @@ export const TimelinePage: React.FC = () => {
   });
 
   return (
-    <div className="p-8 space-y-6 max-w-7xl mx-auto select-none">
+    <div className="p-6 md:p-8 space-y-6 max-w-7xl mx-auto select-none font-sans">
       {/* Header */}
-      <div className="border-b border-border pb-4">
-        <h1 className="text-2xl font-bold text-text-primary tracking-tight">
-          Transaction Timeline
+      <div className="border-b border-white/[0.06] pb-4">
+        <h1 className="text-2xl font-bold text-white tracking-tight flex items-center gap-2.5">
+          <Clock className="w-5 h-5 text-blue-400" />
+          <span>Temporal Transaction Timeline</span>
         </h1>
-        <p className="text-sm text-text-secondary mt-1">
-          Chronological reconstruction of fund movements, intermediary holding durations, and transfer intervals.
+        <p className="text-xs sm:text-sm text-slate-400 mt-1">
+          Chronological reconstruction of cross-clearing fund movements, hop velocities, and temporal holding intervals.
         </p>
       </div>
 
       {/* Analytical Velocity Metrics Row */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-        <div className="bg-white p-4 rounded-card border border-border shadow-card">
-          <div className="text-xs text-text-secondary font-medium">Transaction velocity</div>
-          <div className="text-xl font-bold text-text-primary mt-1 font-mono-numbers">
+        <div className="neu-card p-4">
+          <div className="text-[11px] text-slate-400 font-medium">Average Velocity</div>
+          <div className="text-xl font-extrabold text-white mt-1 font-mono-numbers">
             {scenario.stats.avgHoldingTime}
           </div>
-          <div className="text-xs text-text-muted mt-1">Average per transfer hop</div>
+          <div className="text-[10px] text-slate-500 mt-1">Per intermediary hop</div>
         </div>
 
-        <div className="bg-white p-4 rounded-card border border-border shadow-card">
-          <div className="text-xs text-text-secondary font-medium">Time between transfers</div>
-          <div className="text-xl font-bold text-warning mt-1 font-mono-numbers">
+        <div className="neu-card p-4 border-amber-500/20">
+          <div className="text-[11px] text-amber-300 font-medium">Inter-Hop Interval</div>
+          <div className="text-xl font-extrabold text-amber-400 mt-1 font-mono-numbers">
             4.8 min
           </div>
-          <div className="text-xs text-warning mt-1">High-frequency dispersal</div>
+          <div className="text-[10px] text-amber-400 mt-1">Rapid pass-through</div>
         </div>
 
-        <div className="bg-white p-4 rounded-card border border-border shadow-card">
-          <div className="text-xs text-text-secondary font-medium">Holding duration</div>
-          <div className="text-xl font-bold text-text-primary mt-1 font-mono-numbers">
+        <div className="neu-card p-4">
+          <div className="text-[11px] text-slate-400 font-medium">Traversal Window</div>
+          <div className="text-xl font-extrabold text-white mt-1 font-mono-numbers">
             {scenario.stats.flowDuration}
           </div>
-          <div className="text-xs text-text-muted mt-1">Entire network traversal</div>
+          <div className="text-[10px] text-slate-500 mt-1">Full network traversal</div>
         </div>
 
-        <div className="bg-white p-4 rounded-card border border-border shadow-card">
-          <div className="text-xs text-text-secondary font-medium">Total flow analyzed</div>
-          <div className="text-xl font-bold text-text-primary mt-1 font-mono-numbers">
+        <div className="neu-card p-4">
+          <div className="text-[11px] text-slate-400 font-medium">Gross Flow Volume</div>
+          <div className="text-xl font-extrabold text-blue-400 mt-1 font-mono-numbers">
             ₹{(scenario.stats.totalFlow / 100000).toFixed(2)} Lakh
           </div>
-          <div className="text-xs text-text-muted mt-1">{scenario.transactions.length} transfers recorded</div>
+          <div className="text-[10px] text-slate-500 mt-1">{scenario.transactions.length} transfers recorded</div>
         </div>
       </div>
 
       {/* Controls & Master Timeline Bar */}
-      <div className="bg-white rounded-card border border-border shadow-card p-5 space-y-4">
-        <div className="flex items-center justify-between">
+      <div className="neu-card p-5 space-y-4">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
           <div className="flex items-center gap-2">
             <button
               onClick={() => setTimelineScrubberIndex(Math.max(0, timelineScrubberIndex - 1))}
               disabled={timelineScrubberIndex === 0}
-              className="p-1.5 rounded border border-border bg-white hover:bg-surface-secondary text-text-secondary disabled:opacity-30"
+              className="neu-btn p-1.5 rounded-xl text-slate-300 disabled:opacity-30 cursor-pointer"
               title="Previous transfer"
             >
               <ChevronLeft className="w-4 h-4" />
@@ -128,7 +132,7 @@ export const TimelinePage: React.FC = () => {
 
             <button
               onClick={() => setIsTimelinePlaying(!isTimelinePlaying)}
-              className="px-3.5 py-1.5 rounded bg-brand hover:bg-brand-hover text-white font-medium text-xs flex items-center gap-1.5 shadow-sm transition active:scale-95"
+              className="neu-btn-primary px-4 py-1.5 rounded-xl text-white font-semibold text-xs flex items-center gap-1.5 transition cursor-pointer"
             >
               {isTimelinePlaying ? (
                 <>
@@ -138,7 +142,7 @@ export const TimelinePage: React.FC = () => {
               ) : (
                 <>
                   <Play className="w-3.5 h-3.5 fill-white" />
-                  <span>Play flow</span>
+                  <span>Play Flow</span>
                 </>
               )}
             </button>
@@ -146,7 +150,7 @@ export const TimelinePage: React.FC = () => {
             <button
               onClick={() => setTimelineScrubberIndex(Math.min(totalTxns - 1, timelineScrubberIndex + 1))}
               disabled={timelineScrubberIndex >= totalTxns - 1}
-              className="p-1.5 rounded border border-border bg-white hover:bg-surface-secondary text-text-secondary disabled:opacity-30"
+              className="neu-btn p-1.5 rounded-xl text-slate-300 disabled:opacity-30 cursor-pointer"
               title="Next transfer"
             >
               <ChevronRight className="w-4 h-4" />
@@ -157,45 +161,47 @@ export const TimelinePage: React.FC = () => {
                 setIsTimelinePlaying(false);
                 setTimelineScrubberIndex(0);
               }}
-              className="p-1.5 rounded border border-border bg-white hover:bg-surface-secondary text-text-secondary ml-1"
-              title="Reset"
+              className="neu-btn p-1.5 rounded-xl text-slate-300 hover:text-white ml-1 cursor-pointer"
+              title="Reset Timeline"
             >
               <RotateCcw className="w-3.5 h-3.5" />
             </button>
 
-            <span className="font-mono text-xs text-text-secondary ml-2">
-              Step {Math.min(timelineScrubberIndex + 1, totalTxns)} of {totalTxns}
+            <span className="font-mono text-xs text-slate-400 ml-2">
+              Step <strong className="text-white">{Math.min(timelineScrubberIndex + 1, totalTxns)}</strong> of {totalTxns}
             </span>
           </div>
 
-          <div className="text-xs text-text-secondary font-mono">
-            Timestamp: <strong className="text-text-primary">{scenario.transactions[timelineScrubberIndex]?.displayTime}</strong>
+          <div className="text-xs text-slate-400 font-mono neu-inset-sm px-3 py-1 rounded-xl">
+            Current Marker: <strong className="text-blue-400">{scenario.transactions[timelineScrubberIndex]?.displayTime}</strong>
           </div>
         </div>
 
-        {/* Slider */}
-        <input
-          type="range"
-          min="0"
-          max={Math.max(0, totalTxns - 1)}
-          value={timelineScrubberIndex}
-          onChange={(e) => setTimelineScrubberIndex(Number(e.target.value))}
-          className="w-full accent-brand h-1.5 bg-border rounded cursor-pointer"
-        />
+        {/* Inset Slider Track */}
+        <div className="neu-inset-sm px-3 py-1.5 rounded-xl flex items-center">
+          <input
+            type="range"
+            min="0"
+            max={Math.max(0, totalTxns - 1)}
+            value={timelineScrubberIndex}
+            onChange={(e) => setTimelineScrubberIndex(Number(e.target.value))}
+            className="w-full accent-blue-500 h-1.5 bg-transparent cursor-pointer"
+          />
+        </div>
       </div>
 
       {/* Chronological Sequence List */}
-      <div className="bg-white rounded-card border border-border shadow-card overflow-hidden">
-        <div className="p-4 border-b border-border">
-          <h2 className="text-base font-semibold text-text-primary">
+      <div className="neu-card overflow-hidden">
+        <div className="p-4 border-b border-white/[0.06]">
+          <h2 className="text-base font-bold text-white tracking-tight">
             Chronological Transfer Sequence
           </h2>
-          <p className="text-xs text-text-secondary mt-0.5">
+          <p className="text-xs text-slate-400 mt-0.5">
             Sequential list of recorded bank transfers. Click any transfer to inspect entity details.
           </p>
         </div>
 
-        <div className="divide-y divide-border">
+        <div className="divide-y divide-white/[0.04]">
           {scenario.transactions.map((t, idx) => {
             const isActive = idx === timelineScrubberIndex;
             const isCompleted = idx <= timelineScrubberIndex;
@@ -207,34 +213,34 @@ export const TimelinePage: React.FC = () => {
                   setTimelineScrubberIndex(idx);
                   setSelectedTransaction(t);
                 }}
-                className={`p-3.5 flex items-center justify-between text-xs cursor-pointer transition ${
+                className={`p-3.5 flex items-center justify-between text-xs cursor-pointer transition-all ${
                   isActive 
-                    ? 'bg-brand-subtle' 
+                    ? 'neu-inset text-blue-400 font-semibold border-l-2 border-l-blue-500' 
                     : isCompleted 
-                      ? 'bg-white hover:bg-surface-hover' 
-                      : 'bg-surface-secondary/40 opacity-40'
+                      ? 'hover:bg-white/[0.03] text-slate-200' 
+                      : 'opacity-40 text-slate-500'
                 }`}
               >
                 <div className="flex items-center gap-3">
-                  <span className="font-mono font-medium text-text-muted w-16">
+                  <span className="font-mono text-slate-400 w-16">
                     {t.displayTime}
                   </span>
-                  <span className="font-mono text-xs px-1.5 py-0.5 rounded bg-surface-secondary border border-border text-text-secondary">
+                  <span className="font-mono text-[10px] px-2 py-0.5 rounded-md neu-inset-sm text-slate-300">
                     {t.method}
                   </span>
                   <div className="flex items-center gap-2 font-mono text-xs">
-                    <span className="font-semibold text-text-primary">{t.source}</span>
-                    <ArrowRight className="w-3.5 h-3.5 text-text-muted" />
-                    <span className="font-semibold text-text-primary">{t.target}</span>
+                    <span className="font-bold text-white">{t.source}</span>
+                    <ArrowRight className="w-3.5 h-3.5 text-slate-500" />
+                    <span className="font-bold text-white">{t.target}</span>
                   </div>
                 </div>
 
                 <div className="flex items-center gap-4 font-mono-numbers">
-                  <span className="font-bold text-text-primary">
+                  <span className="font-bold text-white">
                     ₹{t.amount.toLocaleString('en-IN')}
                   </span>
-                  <span className="text-[11px] text-text-secondary bg-surface-secondary px-2 py-0.5 rounded border border-border">
-                    Holding: {t.holdingTimeMinutes ? `${t.holdingTimeMinutes} min` : 'Direct'}
+                  <span className="text-[10px] text-amber-400 neu-inset-sm px-2.5 py-0.5 rounded-full border border-amber-500/20 font-mono">
+                    Holding: {t.holdingTimeMinutes ? `${t.holdingTimeMinutes} min` : 'Direct Hop'}
                   </span>
                 </div>
               </div>
@@ -246,50 +252,50 @@ export const TimelinePage: React.FC = () => {
       {/* Analytical Charts */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         {/* Holding Times */}
-        <div className="bg-white rounded-card border border-border shadow-card p-5">
-          <h3 className="text-sm font-semibold text-text-primary mb-1">
+        <div className="neu-card p-5">
+          <h3 className="text-sm font-bold text-white mb-1">
             Holding Time per Transfer Hop (Minutes)
           </h3>
-          <p className="text-xs text-text-secondary mb-4">
+          <p className="text-xs text-slate-400 mb-4">
             Brief holding durations reveal automated onward pass-through execution.
           </p>
 
           <div className="h-52 w-full">
             <ResponsiveContainer width="100%" height="100%">
               <BarChart data={holdingTimeData} margin={{ top: 5, right: 10, left: -10, bottom: 0 }}>
-                <CartesianGrid strokeDasharray="3 3" stroke="#E2E8F0" vertical={false} />
-                <XAxis dataKey="step" stroke="#94A3B8" fontSize={11} tickLine={false} />
-                <YAxis stroke="#94A3B8" fontSize={11} tickLine={false} tickFormatter={(val) => `${val}m`} />
+                <CartesianGrid strokeDasharray="3 3" stroke="rgba(255, 255, 255, 0.05)" vertical={false} />
+                <XAxis dataKey="step" stroke="#64748B" fontSize={11} tickLine={false} />
+                <YAxis stroke="#64748B" fontSize={11} tickLine={false} tickFormatter={(val) => `${val}m`} />
                 <Tooltip 
-                  contentStyle={{ backgroundColor: '#FFFFFF', borderColor: '#D9E0E8', fontSize: '11px', borderRadius: '4px' }}
-                  formatter={(val: any) => [`${val} min`, 'Holding duration']}
+                  contentStyle={{ backgroundColor: '#141A28', borderColor: 'rgba(255,255,255,0.1)', fontSize: '11px', borderRadius: '12px', color: '#FFF' }}
+                  formatter={(val: any) => [`${val} min`, 'Holding Duration']}
                 />
-                <Bar dataKey="holdingTime" fill="#B7791F" radius={[3, 3, 0, 0]} />
+                <Bar dataKey="holdingTime" fill="#F59E0B" radius={[4, 4, 0, 0]} />
               </BarChart>
             </ResponsiveContainer>
           </div>
         </div>
 
         {/* Cumulative Flow */}
-        <div className="bg-white rounded-card border border-border shadow-card p-5">
-          <h3 className="text-sm font-semibold text-text-primary mb-1">
+        <div className="neu-card p-5">
+          <h3 className="text-sm font-bold text-white mb-1">
             Cumulative Transferred Capital (₹ Lakhs)
           </h3>
-          <p className="text-xs text-text-secondary mb-4">
+          <p className="text-xs text-slate-400 mb-4">
             Linear slope demonstrates rapid multi-bank layering velocity.
           </p>
 
           <div className="h-52 w-full">
             <ResponsiveContainer width="100%" height="100%">
               <LineChart data={cumulativeData} margin={{ top: 5, right: 10, left: -10, bottom: 0 }}>
-                <CartesianGrid strokeDasharray="3 3" stroke="#E2E8F0" vertical={false} />
-                <XAxis dataKey="step" stroke="#94A3B8" fontSize={11} tickLine={false} />
-                <YAxis stroke="#94A3B8" fontSize={11} tickLine={false} tickFormatter={(val) => `₹${val}L`} />
+                <CartesianGrid strokeDasharray="3 3" stroke="rgba(255, 255, 255, 0.05)" vertical={false} />
+                <XAxis dataKey="step" stroke="#64748B" fontSize={11} tickLine={false} />
+                <YAxis stroke="#64748B" fontSize={11} tickLine={false} tickFormatter={(val) => `₹${val}L`} />
                 <Tooltip 
-                  contentStyle={{ backgroundColor: '#FFFFFF', borderColor: '#D9E0E8', fontSize: '11px', borderRadius: '4px' }}
-                  formatter={(val: any) => [`₹${Number(val).toFixed(2)} Lakh`, 'Cumulative flow']}
+                  contentStyle={{ backgroundColor: '#141A28', borderColor: 'rgba(255,255,255,0.1)', fontSize: '11px', borderRadius: '12px', color: '#FFF' }}
+                  formatter={(val: any) => [`₹${Number(val).toFixed(2)} Lakh`, 'Cumulative Volume']}
                 />
-                <Line type="monotone" dataKey="total" stroke="#1769E0" strokeWidth={2} dot={{ r: 3, fill: '#1769E0' }} />
+                <Line type="monotone" dataKey="total" stroke="#3B82F6" strokeWidth={2.5} dot={{ r: 3, fill: '#3B82F6' }} />
               </LineChart>
             </ResponsiveContainer>
           </div>
@@ -298,3 +304,5 @@ export const TimelinePage: React.FC = () => {
     </div>
   );
 };
+
+export default TimelinePage;

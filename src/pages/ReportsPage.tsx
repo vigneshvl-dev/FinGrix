@@ -2,7 +2,10 @@ import React, { useState } from 'react';
 import { 
   Printer, 
   Download, 
-  CheckCircle2
+  CheckCircle2,
+  FileText,
+  ShieldCheck,
+  Building2
 } from 'lucide-react';
 import { useInvestigation } from '../context/InvestigationContext';
 
@@ -18,7 +21,7 @@ export const ReportsPage: React.FC = () => {
 
   const handleExportJSON = () => {
     const reportData = {
-      platform: 'FINGRAPH — Financial Graph Intelligence & Forensics',
+      platform: 'FINGRIX — Forensic Financial Network Intelligence',
       classification: 'CONFIDENTIAL // BANKING COMPLIANCE & INVESTIGATION USE ONLY',
       caseId: c.id,
       generatedAt: new Date().toISOString(),
@@ -76,138 +79,139 @@ export const ReportsPage: React.FC = () => {
   };
 
   return (
-    <div className="p-8 space-y-6 max-w-5xl mx-auto select-none">
+    <div className="p-6 md:p-8 space-y-6 max-w-5xl mx-auto select-none font-sans">
       {/* Header and Actions */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-border pb-4 no-print">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-white/[0.06] pb-4 no-print">
         <div>
-          <h1 className="text-2xl font-bold text-text-primary tracking-tight">
-            Investigation Report
+          <h1 className="text-2xl font-bold text-white tracking-tight flex items-center gap-2.5">
+            <FileText className="w-5 h-5 text-blue-400" />
+            <span>Evidentiary Compliance Dossier</span>
           </h1>
-          <p className="text-sm text-text-secondary mt-1">
-            Audit-ready forensic dossier and compliance documentation for Case {c.id}.
+          <p className="text-xs sm:text-sm text-slate-400 mt-1">
+            Audit-ready forensic dossier and statutory SAR reporting documentation for Case {c.id}.
           </p>
         </div>
 
-        {/* Export Buttons */}
-        <div className="flex items-center gap-2">
+        {/* Neumorphic Export Buttons */}
+        <div className="flex items-center gap-2.5">
           <button
             onClick={handleExportPDF}
-            className="px-3.5 py-1.5 rounded bg-brand hover:bg-brand-hover text-white text-xs font-semibold flex items-center gap-1.5 shadow-sm transition"
+            className="neu-btn-primary px-3.5 py-2 rounded-xl text-white text-xs font-semibold flex items-center gap-1.5 shadow-sm transition cursor-pointer"
           >
             <Printer className="w-3.5 h-3.5" />
-            <span>Export PDF</span>
+            <span>Export Official PDF</span>
           </button>
 
           <button
             onClick={handleExportCSV}
-            className="px-3.5 py-1.5 rounded border border-border bg-white hover:bg-surface-secondary text-text-primary text-xs font-medium flex items-center gap-1.5 transition"
+            className="neu-btn px-3.5 py-2 rounded-xl text-slate-200 hover:text-white text-xs font-medium flex items-center gap-1.5 transition cursor-pointer"
           >
-            <Download className="w-3.5 h-3.5 text-text-muted" />
+            <Download className="w-3.5 h-3.5 text-blue-400" />
             <span>Export CSV</span>
           </button>
 
           <button
             onClick={handleExportJSON}
-            className="px-3.5 py-1.5 rounded border border-border bg-white hover:bg-surface-secondary text-text-primary text-xs font-medium flex items-center gap-1.5 transition"
+            className="neu-btn px-3.5 py-2 rounded-xl text-slate-200 hover:text-white text-xs font-medium flex items-center gap-1.5 transition cursor-pointer"
           >
-            <Download className="w-3.5 h-3.5 text-text-muted" />
+            <Download className="w-3.5 h-3.5 text-cyan-400" />
             <span>Export JSON</span>
           </button>
         </div>
       </div>
 
       {exportNotice && (
-        <div className="p-3 rounded bg-success-subtle border border-success-border text-success text-xs flex items-center gap-2 no-print font-medium">
-          <CheckCircle2 className="w-4 h-4" />
+        <div className="p-3.5 rounded-xl bg-emerald-950/40 border border-emerald-500/30 text-emerald-300 text-xs flex items-center gap-2 no-print font-medium shadow-[inset_2px_2px_5px_rgba(0,0,0,0.6)]">
+          <CheckCircle2 className="w-4 h-4 text-emerald-400" />
           <span>{exportNotice}</span>
         </div>
       )}
 
       {/* Official Financial Investigation Report Document */}
-      <div className="bg-white border border-border rounded-card p-8 shadow-card space-y-7 text-xs text-text-primary print:border-none print:shadow-none print:p-0">
+      <div className="neu-card p-8 space-y-7 text-xs text-white print:border-none print:shadow-none print:p-0 print:bg-white print:text-black">
         {/* Document Header */}
-        <div className="border-b-2 border-brand pb-4 flex justify-between items-start">
+        <div className="border-b-2 border-blue-500 pb-4 flex justify-between items-start">
           <div>
-            <div className="text-base font-bold text-text-primary font-sans">
-              FINGRAPH — Financial Graph Intelligence & Forensics
+            <div className="text-base font-extrabold text-white print:text-black font-sans tracking-wide">
+              FINGRIX — FORENSIC FINANCIAL NETWORK INTELLIGENCE
             </div>
-            <div className="text-xs text-text-secondary mt-0.5">
+            <div className="text-xs text-slate-400 print:text-gray-600 mt-0.5">
               Financial Crimes Compliance Dossier • Case Reference {c.id}
             </div>
-            <div className="text-[11px] text-text-muted mt-1">
+            <div className="text-[10px] text-slate-500 print:text-gray-500 mt-1 font-mono uppercase">
               Classification: STRICTLY CONFIDENTIAL // INTERNAL AUDIT & REGULATORY USE ONLY
             </div>
           </div>
 
           <div className="text-right text-xs">
-            <div className="font-mono font-bold text-brand">{c.id}</div>
-            <div className="text-text-muted">Date: 28 Sep 2026</div>
-            <div className="text-warning font-medium">{c.status}</div>
+            <div className="font-mono font-bold text-blue-400 print:text-blue-600 text-sm">{c.id}</div>
+            <div className="text-slate-400 print:text-gray-600 font-mono text-[11px]">28 Sep 2026</div>
+            <div className="text-amber-400 print:text-amber-600 font-semibold">{c.status}</div>
           </div>
         </div>
 
         {/* Section 1: Case Information */}
         <div className="space-y-2">
-          <h2 className="text-xs font-bold text-text-primary uppercase tracking-wider border-b border-border pb-1">
+          <h2 className="text-xs font-bold text-white uppercase tracking-wider border-b border-white/[0.06] pb-1 font-mono">
             1. Case Information
           </h2>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 p-3 rounded bg-surface-secondary border border-border">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 p-3.5 rounded-xl neu-inset-sm">
             <div>
-              <span className="text-[10px] text-text-muted uppercase block">Case ID</span>
-              <span className="font-mono font-semibold text-text-primary">{c.id}</span>
+              <span className="text-[10px] text-slate-400 uppercase block font-mono">Case ID</span>
+              <span className="font-mono font-bold text-blue-400">{c.id}</span>
             </div>
             <div>
-              <span className="text-[10px] text-text-muted uppercase block">Network ID</span>
-              <span className="font-mono font-semibold text-text-primary">{c.networkId}</span>
+              <span className="text-[10px] text-slate-400 uppercase block font-mono">Network ID</span>
+              <span className="font-mono font-bold text-white">{c.networkId}</span>
             </div>
             <div>
-              <span className="text-[10px] text-text-muted uppercase block">Lead Institution</span>
-              <span className="font-medium text-text-primary">{c.leadInstitution}</span>
+              <span className="text-[10px] text-slate-400 uppercase block font-mono">Lead Institution</span>
+              <span className="font-medium text-slate-200">{c.leadInstitution}</span>
             </div>
             <div>
-              <span className="text-[10px] text-text-muted uppercase block">Lead Investigator</span>
-              <span className="font-medium text-text-primary">{c.assignedInvestigator}</span>
+              <span className="text-[10px] text-slate-400 uppercase block font-mono">Lead Investigator</span>
+              <span className="font-medium text-slate-200">{c.assignedInvestigator}</span>
             </div>
           </div>
         </div>
 
         {/* Section 2: Investigation Scope */}
         <div className="space-y-2">
-          <h2 className="text-xs font-bold text-text-primary uppercase tracking-wider border-b border-border pb-1">
+          <h2 className="text-xs font-bold text-white uppercase tracking-wider border-b border-white/[0.06] pb-1 font-mono">
             2. Investigation Scope
           </h2>
-          <p className="text-text-secondary leading-relaxed">
+          <p className="text-slate-300 leading-relaxed">
             Multi-bank transaction monitoring investigation initiated to determine coordinate fund movement, intermediary pass-through velocity, and circular layering across participating institutions pursuant to regulatory transaction monitoring guidelines.
           </p>
         </div>
 
         {/* Section 3: Network Summary */}
         <div className="space-y-2">
-          <h2 className="text-xs font-bold text-text-primary uppercase tracking-wider border-b border-border pb-1">
+          <h2 className="text-xs font-bold text-white uppercase tracking-wider border-b border-white/[0.06] pb-1 font-mono">
             3. Network Summary
           </h2>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-3 text-xs">
-            <div className="p-2.5 rounded border border-border bg-surface-secondary">
-              <span className="text-[10px] text-text-muted uppercase block">Total Transferred Volume</span>
-              <span className="font-semibold text-text-primary font-mono-numbers mt-0.5 block">
+            <div className="p-3 rounded-xl neu-card">
+              <span className="text-[10px] text-slate-400 uppercase block font-mono">Total Transferred</span>
+              <span className="font-bold text-blue-400 font-mono-numbers mt-1 block text-sm">
                 ₹{(scenario.stats.totalFlow / 100000).toFixed(2)} Lakh
               </span>
             </div>
-            <div className="p-2.5 rounded border border-border bg-surface-secondary">
-              <span className="text-[10px] text-text-muted uppercase block">Monitored Entities</span>
-              <span className="font-semibold text-text-primary font-mono-numbers mt-0.5 block">
+            <div className="p-3 rounded-xl neu-card">
+              <span className="text-[10px] text-slate-400 uppercase block font-mono">Monitored Entities</span>
+              <span className="font-bold text-white font-mono-numbers mt-1 block text-sm">
                 {scenario.accounts.length} Accounts
               </span>
             </div>
-            <div className="p-2.5 rounded border border-border bg-surface-secondary">
-              <span className="text-[10px] text-text-muted uppercase block">Average Holding Time</span>
-              <span className="font-semibold text-warning font-mono-numbers mt-0.5 block">
+            <div className="p-3 rounded-xl neu-card">
+              <span className="text-[10px] text-slate-400 uppercase block font-mono">Average Holding Time</span>
+              <span className="font-bold text-amber-400 font-mono-numbers mt-1 block text-sm">
                 {scenario.stats.avgHoldingTime}
               </span>
             </div>
-            <div className="p-2.5 rounded border border-border bg-surface-secondary">
-              <span className="text-[10px] text-text-muted uppercase block">Flow Duration</span>
-              <span className="font-semibold text-text-primary font-mono-numbers mt-0.5 block">
+            <div className="p-3 rounded-xl neu-card">
+              <span className="text-[10px] text-slate-400 uppercase block font-mono">Flow Duration</span>
+              <span className="font-bold text-white font-mono-numbers mt-1 block text-sm">
                 {scenario.stats.flowDuration}
               </span>
             </div>
@@ -216,129 +220,77 @@ export const ReportsPage: React.FC = () => {
 
         {/* Section 4: Flagged Entities */}
         <div className="space-y-2">
-          <h2 className="text-xs font-bold text-text-primary uppercase tracking-wider border-b border-border pb-1">
+          <h2 className="text-xs font-bold text-white uppercase tracking-wider border-b border-white/[0.06] pb-1 font-mono">
             4. Flagged Entities
           </h2>
-          <table className="w-full text-left text-xs border border-border rounded">
-            <thead className="bg-surface-secondary text-[10px] uppercase font-semibold text-text-muted">
-              <tr>
-                <th className="py-2 px-3">Account ID</th>
-                <th className="py-2 px-3">Entity Name</th>
-                <th className="py-2 px-3">Institution</th>
-                <th className="py-2 px-3">Position</th>
-                <th className="py-2 px-3 font-mono-numbers">Risk Score</th>
-                <th className="py-2 px-3">Holding Time</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-border">
-              {scenario.accounts.map(acc => (
-                <tr key={acc.id}>
-                  <td className="py-2 px-3 font-mono font-medium text-brand">{acc.id}</td>
-                  <td className="py-2 px-3 font-medium text-text-primary">{acc.label}</td>
-                  <td className="py-2 px-3 text-text-secondary">{acc.institution}</td>
-                  <td className="py-2 px-3 text-text-muted">{acc.networkPosition}</td>
-                  <td className="py-2 px-3 font-mono-numbers font-medium text-risk">{acc.riskScore}</td>
-                  <td className="py-2 px-3 text-text-secondary">
-                    {acc.averageHoldingTimeMinutes > 60 ? `${(acc.averageHoldingTimeMinutes / 1440).toFixed(1)}d` : `${acc.averageHoldingTimeMinutes}m`}
-                  </td>
+          <div className="neu-card overflow-hidden">
+            <table className="w-full text-left text-xs">
+              <thead className="neu-inset-sm text-[10px] uppercase font-bold text-slate-400 font-mono">
+                <tr>
+                  <th className="py-2.5 px-3">Account ID</th>
+                  <th className="py-2.5 px-3">Entity Name</th>
+                  <th className="py-2.5 px-3">Institution</th>
+                  <th className="py-2.5 px-3">Position</th>
+                  <th className="py-2.5 px-3 font-mono-numbers">Risk Score</th>
+                  <th className="py-2.5 px-3">Holding Time</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-
-        {/* Section 5: Transaction Evidence */}
-        <div className="space-y-2">
-          <h2 className="text-xs font-bold text-text-primary uppercase tracking-wider border-b border-border pb-1">
-            5. Transaction Evidence
-          </h2>
-          <table className="w-full text-left text-xs border border-border rounded">
-            <thead className="bg-surface-secondary text-[10px] uppercase font-semibold text-text-muted">
-              <tr>
-                <th className="py-2 px-3">Transaction Reference</th>
-                <th className="py-2 px-3">Timestamp</th>
-                <th className="py-2 px-3">Source</th>
-                <th className="py-2 px-3">Target</th>
-                <th className="py-2 px-3 font-mono-numbers">Amount</th>
-                <th className="py-2 px-3">Rail</th>
-                <th className="py-2 px-3">Interval</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-border">
-              {scenario.transactions.map(t => (
-                <tr key={t.id}>
-                  <td className="py-2 px-3 font-mono text-brand">{t.id}</td>
-                  <td className="py-2 px-3 text-text-muted font-mono">{t.displayTime}</td>
-                  <td className="py-2 px-3 font-mono text-text-primary">{t.source}</td>
-                  <td className="py-2 px-3 font-mono text-text-primary">{t.target}</td>
-                  <td className="py-2 px-3 font-mono-numbers font-semibold text-text-primary">₹{t.amount.toLocaleString('en-IN')}</td>
-                  <td className="py-2 px-3 text-text-secondary">{t.method}</td>
-                  <td className="py-2 px-3 text-warning">{t.holdingTimeMinutes ? `${t.holdingTimeMinutes} min` : 'Direct'}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-
-        {/* Section 6: Temporal Analysis */}
-        <div className="space-y-2">
-          <h2 className="text-xs font-bold text-text-primary uppercase tracking-wider border-b border-border pb-1">
-            6. Temporal Analysis
-          </h2>
-          <p className="text-text-secondary leading-relaxed">
-            Temporal velocity analysis indicates high-speed forward routing. Average holding time across intermediaries is {scenario.stats.avgHoldingTime}, with 94.3% value retention across the cycle.
-          </p>
-        </div>
-
-        {/* Section 7: Detected Patterns */}
-        <div className="space-y-2">
-          <h2 className="text-xs font-bold text-text-primary uppercase tracking-wider border-b border-border pb-1">
-            7. Detected Patterns
-          </h2>
-          <div className="flex flex-wrap gap-2">
-            {c.detectedPatterns.map(p => (
-              <span key={p} className="px-2.5 py-1 rounded bg-surface-secondary text-text-primary border border-border text-xs">
-                {p}
-              </span>
-            ))}
+              </thead>
+              <tbody className="divide-y divide-white/[0.04]">
+                {scenario.accounts.map(acc => (
+                  <tr key={acc.id} className="hover:bg-white/[0.02]">
+                    <td className="py-2.5 px-3 font-mono font-bold text-blue-400">{acc.id}</td>
+                    <td className="py-2.5 px-3 font-semibold text-white">{acc.label}</td>
+                    <td className="py-2.5 px-3 text-slate-300">{acc.institution}</td>
+                    <td className="py-2.5 px-3 text-slate-400">{acc.networkPosition}</td>
+                    <td className="py-2.5 px-3 font-mono-numbers font-bold text-red-400">{acc.riskScore}</td>
+                    <td className="py-2.5 px-3 text-slate-300">
+                      {acc.averageHoldingTimeMinutes > 60 ? `${(acc.averageHoldingTimeMinutes / 1440).toFixed(1)}d` : `${acc.averageHoldingTimeMinutes}m`}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
           </div>
         </div>
 
         {/* Section 8: Investigator Observations */}
         <div className="space-y-2">
-          <h2 className="text-xs font-bold text-text-primary uppercase tracking-wider border-b border-border pb-1">
-            8. Investigator Observations
+          <h2 className="text-xs font-bold text-white uppercase tracking-wider border-b border-white/[0.06] pb-1 font-mono">
+            8. Investigator Observations & Audit Log
           </h2>
           <div className="space-y-2">
             {notes.map(n => (
-              <div key={n.id} className="p-2.5 rounded bg-surface-secondary border border-border space-y-1">
-                <div className="flex justify-between text-[11px] text-text-muted">
-                  <span className="font-semibold text-text-primary">{n.author}</span>
-                  <span>{n.timestamp}</span>
+              <div key={n.id} className="p-3 rounded-xl neu-inset-sm space-y-1">
+                <div className="flex justify-between text-[11px] text-slate-400">
+                  <span className="font-bold text-white flex items-center gap-1.5">
+                    <ShieldCheck className="w-3.5 h-3.5 text-blue-400" />
+                    {n.author} ({n.role})
+                  </span>
+                  <span className="font-mono">{n.timestamp}</span>
                 </div>
-                <p className="text-text-secondary">{n.content}</p>
+                <p className="text-slate-300">{n.content}</p>
               </div>
             ))}
           </div>
         </div>
 
         {/* Section 9: Evidence References & Sign-off */}
-        <div className="space-y-4 pt-4 border-t border-border">
-          <h2 className="text-xs font-bold text-text-primary uppercase tracking-wider border-b border-border pb-1">
-            9. Evidence References & Sign-off
+        <div className="space-y-4 pt-4 border-t border-white/[0.06]">
+          <h2 className="text-xs font-bold text-white uppercase tracking-wider border-b border-white/[0.06] pb-1 font-mono">
+            9. Evidence References & Cryptographic Sign-off
           </h2>
-          <div className="grid grid-cols-2 md:grid-cols-3 gap-6 text-xs text-text-secondary">
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-6 text-xs text-slate-400">
             <div>
-              <span className="text-[10px] text-text-muted uppercase block">Report Hash</span>
-              <span className="font-mono text-text-primary text-[10px]">SHA256: 7f3b89a1c...</span>
+              <span className="text-[10px] text-slate-500 uppercase block font-mono">Report Hash</span>
+              <span className="font-mono text-cyan-400 text-[10px]">SHA256: 7f3b89a1c89f02e...</span>
             </div>
             <div>
-              <span className="text-[10px] text-text-muted uppercase block">Certified Officer</span>
-              <span className="font-medium text-text-primary">{c.assignedInvestigator}</span>
+              <span className="text-[10px] text-slate-500 uppercase block font-mono">Certified Officer</span>
+              <span className="font-medium text-white">{c.assignedInvestigator}</span>
             </div>
             <div>
-              <span className="text-[10px] text-text-muted uppercase block">Recommended Action</span>
-              <span className="font-semibold text-risk">File Suspicious Activity Report (SAR)</span>
+              <span className="text-[10px] text-slate-500 uppercase block font-mono">Recommended Action</span>
+              <span className="font-bold text-red-400">File Suspicious Activity Report (SAR)</span>
             </div>
           </div>
         </div>
@@ -346,3 +298,5 @@ export const ReportsPage: React.FC = () => {
     </div>
   );
 };
+
+export default ReportsPage;

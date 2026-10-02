@@ -210,7 +210,7 @@ const NetworkGraphInternal: React.FC = () => {
   );
 
   return (
-    <div className="relative w-full h-full bg-[#F8FAFC] graph-canvas-bg overflow-hidden select-none">
+    <div className="relative w-full h-full bg-[#0A0D15] graph-canvas-bg overflow-hidden select-none">
       <ReactFlow
         nodes={initialNodes}
         edges={initialEdges}
@@ -224,56 +224,58 @@ const NetworkGraphInternal: React.FC = () => {
         proOptions={{ hideAttribution: true }}
       >
         <Background 
-          color="#CBD5E1" 
-          gap={20} 
+          color="#1E283C" 
+          gap={22} 
           size={1} 
           variant={BackgroundVariant.Dots} 
         />
         
-        {/* Subtle controls */}
+        {/* Subtle Neumorphic controls */}
         <Controls 
-          className="!bg-white !border !border-border !rounded !shadow-sm !text-text-primary overflow-hidden" 
+          className="!bg-[#141A28] !border !border-white/10 !rounded-xl !shadow-[6px_6px_14px_rgba(0,0,0,0.7)] !text-white overflow-hidden" 
           showInteractive={false}
         />
 
         <MiniMap
           nodeColor={(n) => {
-            if (n.id === selectedAccount?.id) return '#1769E0';
-            return '#CBD5E1';
+            if (n.id === selectedAccount?.id) return '#3B82F6';
+            return '#334155';
           }}
-          maskColor="rgba(248, 250, 252, 0.7)"
-          className="!bg-white !border !border-border !rounded"
+          maskColor="rgba(10, 13, 21, 0.75)"
+          className="!bg-[#141A28] !border !border-white/10 !rounded-xl !shadow-[6px_6px_14px_rgba(0,0,0,0.7)]"
           zoomable
           pannable
         />
       </ReactFlow>
 
-      {/* Clean Trace Flow & Canvas Counter */}
-      <div className="absolute top-3 left-3 z-10 flex items-center gap-2">
+      {/* Neumorphic Floating Action Toolbar */}
+      <div className="absolute top-4 left-4 z-10 flex items-center gap-2 neu-card p-1.5 border border-white/10 shadow-[8px_8px_20px_rgba(0,0,0,0.8),-4px_-4px_10px_rgba(255,255,255,0.035)]">
         <button
           onClick={triggerTraceFlow}
-          className={`flex items-center gap-1.5 px-3 py-1.5 rounded text-xs font-semibold shadow-sm transition active:scale-95 ${
+          className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold shadow-sm transition active:scale-95 cursor-pointer ${
             isTracingFlow
-              ? 'bg-warning text-white'
-              : 'bg-brand hover:bg-brand-hover text-white'
+              ? 'bg-amber-500 text-white shadow-[0_0_12px_rgba(245,158,11,0.6)]'
+              : 'neu-btn-primary'
           }`}
         >
           <Play className="w-3.5 h-3.5 fill-white" />
-          <span>{isTracingFlow ? 'Tracing flow...' : 'Trace flow'}</span>
+          <span>{isTracingFlow ? 'Tracing Dynamic Flow...' : 'Trace Flow'}</span>
         </button>
 
         <button
           onClick={() => fitView({ padding: 0.2, duration: 400 })}
-          className="p-1.5 rounded bg-white border border-border text-text-secondary hover:text-text-primary text-xs flex items-center gap-1 shadow-sm"
-          title="Reset zoom"
+          className="neu-btn p-1.5 rounded-xl text-slate-300 hover:text-white text-xs flex items-center gap-1 cursor-pointer"
+          title="Reset Zoom to Fit"
         >
           <RotateCcw className="w-3.5 h-3.5" />
         </button>
 
-        <div className="px-2.5 py-1 rounded bg-white border border-border text-[11px] font-mono text-text-secondary flex items-center gap-2 shadow-sm">
-          <span>{filteredAccounts.length} entities</span>
+        <div className="neu-inset-sm px-3 py-1 rounded-xl text-[11px] font-mono text-slate-300 flex items-center gap-2">
+          <span className="text-blue-400 font-bold">{filteredAccounts.length}</span>
+          <span className="text-slate-500">nodes</span>
           <span>•</span>
-          <span>{initialEdges.length} transfers</span>
+          <span className="text-cyan-400 font-bold">{initialEdges.length}</span>
+          <span className="text-slate-500">edges</span>
         </div>
       </div>
     </div>

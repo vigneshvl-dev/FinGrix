@@ -1140,6 +1140,23 @@ export const SCENARIOS: Record<string, ScenarioDefinition> = {
 // ==========================================
 export const INVESTIGATION_CASES: InvestigationCase[] = [
   {
+    id: 'INV-2026-0173',
+    networkId: 'Suspicious Network #173',
+    title: 'CASE #INV-2026-0173: Multi-Bank Circular & Rapid Pass-Through Ring',
+    scenarioType: 'scenario-c-circular',
+    accountsCount: 27,
+    transactionsCount: 184,
+    totalFlow: 48200000, // ₹4.82 Cr
+    riskIndicatorsCount: 9,
+    status: 'Active Investigation',
+    priority: 'Critical',
+    assignedInvestigator: 'V. Kumar (Lead Forensics Investigator)',
+    lastUpdated: '4 mins ago',
+    leadInstitution: 'HDFC Bank',
+    summary: '27 accounts across 5 financial institutions coordinating multi-hop circular flows and rapid pass-through conduit layering between 18 Sep – 22 Sep 2026.',
+    detectedPatterns: ['Circular Fund Flow', 'Rapid Pass-Through Chain', 'Cross-Institution Layering']
+  },
+  {
     id: 'FG-2026-001',
     networkId: 'NET-1042',
     title: 'Coordinated Transaction Network (Round-Tripping)',
@@ -1361,6 +1378,341 @@ export const EXECUTIVE_KPIS = {
   detectionSummary: {
     circularFlow: 42,
     rapidPassthrough: 31,
-    smurfingPatterns: 67
+    smurfingPatterns: 18
   }
 };
+
+// ==========================================
+// 5 CORE INSTITUTIONS NETWORK
+// ==========================================
+export interface InstitutionProfile {
+  id: string;
+  name: string;
+  code: string;
+  accountsMonitored: number;
+  transactionsVolume: string;
+  suspiciousAccounts: number;
+  flaggedNetworks: number;
+  interBankConnections: string[];
+  netPosition: string;
+  riskRating: 'Low' | 'Medium' | 'High';
+  headquarters: string;
+}
+
+export const CORE_INSTITUTIONS_DATA: InstitutionProfile[] = [
+  {
+    id: 'INST-HDFC',
+    name: 'HDFC Bank',
+    code: 'HDFC',
+    accountsMonitored: 14820,
+    transactionsVolume: '₹4,120 Cr',
+    suspiciousAccounts: 412,
+    flaggedNetworks: 64,
+    interBankConnections: ['SBI', 'ICICI Bank', 'Axis Bank', 'YES Bank'],
+    netPosition: '+₹184 Cr (Surplus)',
+    riskRating: 'Medium',
+    headquarters: 'Mumbai'
+  },
+  {
+    id: 'INST-ICICI',
+    name: 'ICICI Bank',
+    code: 'ICICI',
+    accountsMonitored: 11490,
+    transactionsVolume: '₹3,450 Cr',
+    suspiciousAccounts: 328,
+    flaggedNetworks: 52,
+    interBankConnections: ['HDFC Bank', 'Axis Bank', 'YES Bank'],
+    netPosition: '-₹42 Cr (Deficit)',
+    riskRating: 'Medium',
+    headquarters: 'Mumbai'
+  },
+  {
+    id: 'INST-SBI',
+    name: 'State Bank of India',
+    code: 'SBI',
+    accountsMonitored: 18920,
+    transactionsVolume: '₹6,890 Cr',
+    suspiciousAccounts: 384,
+    flaggedNetworks: 48,
+    interBankConnections: ['HDFC Bank', 'Axis Bank'],
+    netPosition: '+₹310 Cr (Surplus)',
+    riskRating: 'Low',
+    headquarters: 'New Delhi'
+  },
+  {
+    id: 'INST-AXIS',
+    name: 'Axis Bank',
+    code: 'AXIS',
+    accountsMonitored: 8410,
+    transactionsVolume: '₹2,680 Cr',
+    suspiciousAccounts: 219,
+    flaggedNetworks: 39,
+    interBankConnections: ['HDFC Bank', 'ICICI Bank', 'YES Bank', 'SBI'],
+    netPosition: '-₹98 Cr (Deficit)',
+    riskRating: 'High',
+    headquarters: 'Ahmedabad'
+  },
+  {
+    id: 'INST-YES',
+    name: 'YES Bank',
+    code: 'YES',
+    accountsMonitored: 4591,
+    transactionsVolume: '₹1,240 Cr',
+    suspiciousAccounts: 141,
+    flaggedNetworks: 27,
+    interBankConnections: ['ICICI Bank', 'Axis Bank', 'HDFC Bank'],
+    netPosition: '-₹44 Cr (Deficit)',
+    riskRating: 'High',
+    headquarters: 'Mumbai'
+  }
+];
+
+// ==========================================
+// RAW TRANSACTION DATASET INGESTION PIPELINE
+// ==========================================
+export const INGESTION_DATASETS = [
+  {
+    id: 'INGEST-2026-09A',
+    filename: 'interbank_clearing_sep_2026.csv',
+    format: 'CSV' as const,
+    sizeBytes: '284.6 MB',
+    transactionsCount: 2483921,
+    accountsCount: 48231,
+    institutionsCount: 5,
+    suspiciousClustersDetected: 173,
+    timestamp: '2026-09-28 08:30:14',
+    status: 'Ingested' as const
+  },
+  {
+    id: 'INGEST-2026-09B',
+    filename: 'instant_upi_rtgs_feed.json',
+    format: 'JSON' as const,
+    sizeBytes: '112.4 MB',
+    transactionsCount: 840119,
+    accountsCount: 19440,
+    institutionsCount: 4,
+    suspiciousClustersDetected: 58,
+    timestamp: '2026-09-28 09:15:00',
+    status: 'Ingested' as const
+  },
+  {
+    id: 'INGEST-2026-09C',
+    filename: 'corporate_remittance_batch.xlsx',
+    format: 'Excel' as const,
+    sizeBytes: '48.2 MB',
+    transactionsCount: 312050,
+    accountsCount: 7890,
+    institutionsCount: 3,
+    suspiciousClustersDetected: 19,
+    timestamp: '2026-09-27 18:22:40',
+    status: 'Ingested' as const
+  }
+];
+
+// ==========================================
+// BENIGN HIGH-VOLUME COMMERCE FILTERING
+// ==========================================
+export const BENIGN_COMMERCE_ITEMS: {
+  id: string;
+  entityName: string;
+  category: string;
+  monthlyVolume: string;
+  classification: 'Normal Commerce' | 'High-Volume Legitimate' | 'Unusual' | 'Suspicious';
+  reason: string;
+  counterpartiesCount: number;
+  settlementFrequency: string;
+  exemptionStatus: 'Exempt' | 'Under Review';
+}[] = [
+  {
+    id: 'BEN-001',
+    entityName: 'Reliance Retail Wholesale Settlement',
+    category: 'FMCG Merchant Aggregator',
+    monthlyVolume: '₹342.8 Cr',
+    classification: 'High-Volume Legitimate',
+    reason: 'Recurring merchant settlement pattern; consistent counterparties over 24+ months; stable 23:45 IST clearing interval; zero circular routing detected.',
+    counterpartiesCount: 148,
+    settlementFrequency: 'Daily EOD Batch',
+    exemptionStatus: 'Exempt'
+  },
+  {
+    id: 'BEN-002',
+    entityName: 'Tata Consumer Products Supply Ledger',
+    category: 'Supply Chain Operations',
+    monthlyVolume: '₹188.4 Cr',
+    classification: 'High-Volume Legitimate',
+    reason: 'Verified GST e-way bills; 15-30 day payment settlement cycle; operating profit margins preserved; verified corporate director UBOs.',
+    counterpartiesCount: 92,
+    settlementFrequency: 'Bi-Weekly Schedule',
+    exemptionStatus: 'Exempt'
+  },
+  {
+    id: 'BEN-003',
+    entityName: 'Infosys Global Payroll Clearing',
+    category: 'Corporate Salary Disbursement',
+    monthlyVolume: '₹890.2 Cr',
+    classification: 'Normal Commerce',
+    reason: 'Periodic 1-to-many fanout on month-end; recipient retail accounts verified via Aadhaar-linked PAN; no fund consolidation return.',
+    counterpartiesCount: 31200,
+    settlementFrequency: 'Monthly (Last Working Day)',
+    exemptionStatus: 'Exempt'
+  },
+  {
+    id: 'BEN-004',
+    entityName: 'Apex Commodities Brokerage Escrow',
+    category: 'Securities Clearing',
+    monthlyVolume: '₹94.1 Cr',
+    classification: 'Unusual',
+    reason: 'Elevated intraday velocity between 3 counterparties; trading exchange clearing verification in progress.',
+    counterpartiesCount: 18,
+    settlementFrequency: 'T+1 Settlement',
+    exemptionStatus: 'Under Review'
+  },
+  {
+    id: 'BEN-005',
+    entityName: 'Global Horizon Trading Pvt Ltd',
+    category: 'Import-Export Shell Conduit',
+    monthlyVolume: '₹4.82 Cr',
+    classification: 'Suspicious',
+    reason: 'Zero asset retention; 4-hop circular fund cycle returning to originator; < 8 min intermediary holding times across 4 banks.',
+    counterpartiesCount: 6,
+    settlementFrequency: 'Continuous Layering',
+    exemptionStatus: 'Under Review'
+  }
+];
+
+// ==========================================
+// FORENSIC EVIDENCE CHECKLIST
+// ==========================================
+export const EVIDENCE_LEDGER_ITEMS = [
+  {
+    id: 'EVD-01',
+    title: 'Circular flow detected',
+    description: 'Closed fund-flow cycle where ₹3.82L returns to originator entity ACC-1042 with 94.3% capital retention.',
+    status: 'Verified',
+    severity: 'critical' as const,
+    involvedAccounts: ['ACC-1042', 'ACC-1043', 'ACC-1044', 'ACC-1045'],
+    involvedTransactions: ['TXN-984210', 'TXN-984211', 'TXN-984212', 'TXN-984213']
+  },
+  {
+    id: 'EVD-02',
+    title: '4-hop transaction cycle',
+    description: 'Topological loop traverses HDFC → ICICI → Axis → SBI → HDFC across 4 distinct corporate entities.',
+    status: 'Verified',
+    severity: 'critical' as const,
+    involvedAccounts: ['ACC-1042', 'ACC-1043', 'ACC-1044', 'ACC-1045'],
+    involvedTransactions: ['TXN-984210', 'TXN-984211', 'TXN-984212', 'TXN-984213']
+  },
+  {
+    id: 'EVD-03',
+    title: 'Rapid movement within 26 minutes',
+    description: 'Intermediary accounts ACC-1043 and ACC-1044 held capital for under 6 minutes before onward dispatch.',
+    status: 'Verified',
+    severity: 'critical' as const,
+    involvedAccounts: ['ACC-1043', 'ACC-1044'],
+    involvedTransactions: ['TXN-984210', 'TXN-984211', 'TXN-984212']
+  },
+  {
+    id: 'EVD-04',
+    title: 'Cross-institution transfers',
+    description: 'Automated IMPS and RTGS rails exploited across 5 financial institutions to circumvent single-bank alert monitors.',
+    status: 'Verified',
+    severity: 'high' as const,
+    involvedAccounts: ['ACC-1042', 'ACC-1043', 'ACC-1044', 'ACC-1045'],
+    involvedTransactions: ['TXN-984210', 'TXN-984211', 'TXN-984212', 'TXN-984213']
+  },
+  {
+    id: 'EVD-05',
+    title: 'Repeated counterparties',
+    description: 'Shared incorporation directors, registered agent addresses in Ahmedabad, and matching IP login subnets.',
+    status: 'Verified',
+    severity: 'high' as const,
+    involvedAccounts: ['ACC-1042', 'ACC-1043'],
+    involvedTransactions: ['TXN-984210']
+  },
+  {
+    id: 'EVD-06',
+    title: 'Structuring indicators detected',
+    description: 'Multi-account sub-threshold disbursement pattern shaving margins while keeping individual hops below trigger thresholds.',
+    status: 'Verified',
+    severity: 'warning' as const,
+    involvedAccounts: ['ACC-1042', 'ACC-1046'],
+    involvedTransactions: ['TXN-984214', 'TXN-984215']
+  }
+];
+
+// ==========================================
+// TEMPORAL ANALYSIS SEQUENCE
+// ==========================================
+export const TEMPORAL_CHRONOLOGY = [
+  {
+    time: '09:12',
+    timestamp: '2026-09-28 09:12:04',
+    source: 'ACC-102 (HDFC)',
+    target: 'ACC-784 (ICICI)',
+    sourceId: 'ACC-1042',
+    targetId: 'ACC-1043',
+    amount: 1200000,
+    amountFormatted: '₹12L',
+    rail: 'RTGS',
+    holdingTime: 'Initiator',
+    velocityAlert: false,
+    notes: 'Origin transfer out of shell treasury'
+  },
+  {
+    time: '09:18',
+    timestamp: '2026-09-28 09:18:22',
+    source: 'ACC-784 (ICICI)',
+    target: 'ACC-291 (Axis)',
+    sourceId: 'ACC-1043',
+    targetId: 'ACC-1044',
+    amount: 900000,
+    amountFormatted: '₹9L',
+    rail: 'IMPS',
+    holdingTime: '6m 18s',
+    velocityAlert: true,
+    notes: 'Rapid pass-through; 6 min holding time'
+  },
+  {
+    time: '09:31',
+    timestamp: '2026-09-28 09:31:10',
+    source: 'ACC-291 (Axis)',
+    target: 'ACC-552 (SBI)',
+    sourceId: 'ACC-1044',
+    targetId: 'ACC-1045',
+    amount: 800000,
+    amountFormatted: '₹8L',
+    rail: 'NEFT',
+    holdingTime: '12m 48s',
+    velocityAlert: false,
+    notes: 'Layering hop via clearing aggregator'
+  },
+  {
+    time: '10:04',
+    timestamp: '2026-09-28 10:04:45',
+    source: 'ACC-552 (SBI)',
+    target: 'ACC-883 (YES Bank)',
+    sourceId: 'ACC-1045',
+    targetId: 'ACC-1046',
+    amount: 1100000,
+    amountFormatted: '₹11L',
+    rail: 'RTGS',
+    holdingTime: '33m 35s',
+    velocityAlert: false,
+    notes: 'Consolidation transfer before return hop'
+  },
+  {
+    time: '10:21',
+    timestamp: '2026-09-28 10:21:18',
+    source: 'ACC-883 (YES Bank)',
+    target: 'ACC-102 (HDFC)',
+    sourceId: 'ACC-1046',
+    targetId: 'ACC-1042',
+    amount: 700000,
+    amountFormatted: '₹7L',
+    rail: 'IMPS',
+    holdingTime: '16m 33s',
+    velocityAlert: true,
+    notes: 'Circular return link completing loop'
+  }
+];
+
