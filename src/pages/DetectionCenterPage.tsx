@@ -9,7 +9,12 @@ import {
   ShieldAlert,
   Repeat,
   Zap,
-  Layers
+  Layers,
+  Clock,
+  TrendingDown,
+  Building2,
+  Lock,
+  ChevronRight
 } from 'lucide-react';
 import { useInvestigation } from '../context/InvestigationContext';
 import { ScenarioType } from '../types';
@@ -28,38 +33,41 @@ export const DetectionCenterPage: React.FC = () => {
     <div className="p-6 md:p-8 space-y-6 max-w-7xl mx-auto select-none font-sans">
       {/* Header */}
       <div className="border-b border-white/[0.06] pb-4">
+        <div className="flex items-center gap-2 text-xs font-mono text-blue-400 mb-1">
+          <ShieldAlert className="w-3.5 h-3.5" />
+          <span>MULTI-GRAPH TOPOLOGICAL HEURISTICS</span>
+        </div>
         <h1 className="text-2xl font-bold text-white tracking-tight flex items-center gap-2.5">
-          <ShieldAlert className="w-5 h-5 text-blue-400" />
-          <span>Heuristic Detection Center</span>
+          <span>Pattern Detection & AML Typologies</span>
         </h1>
         <p className="text-xs sm:text-sm text-slate-400 mt-1">
-          Automated multi-graph heuristics for cyclical fund routing, rapid mule pass-throughs, smurfing rings, and legitimate commerce exemptions.
+          Automated multi-graph algorithms for circular fund round-tripping, linear rapid pass-through conduits, and sub-threshold smurfing funnels.
         </p>
       </div>
 
-      {/* SECTION 1: CIRCULAR FLOW DETECTION */}
-      <div className="neu-card p-5 space-y-4">
+      {/* PATTERN 1: CIRCULAR / ROUND-TRIPPING (Requirement 5) */}
+      <div className="neu-card p-6 space-y-4 border-l-4 border-l-red-500">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-white/[0.06] pb-3">
           <div>
             <div className="flex items-center gap-2">
               <h2 className="text-base font-bold text-white flex items-center gap-2">
                 <Repeat className="w-4 h-4 text-red-400" />
-                Circular Flow & Round-Tripping Engine
+                <span>Circular Fund Flow Detected</span>
               </h2>
               <span className="px-2.5 py-0.5 rounded-full text-[10px] font-mono font-bold bg-red-500/20 text-red-400 border border-red-500/30">
-                12 active loops
+                Confidence: 98.4%
               </span>
             </div>
             <p className="text-xs text-slate-400 mt-0.5">
-              Identifies closed fund-flow cycles that depart from and return to the originating or affiliated accounts.
+              Closed loop fund movement that departs from and returns to the originating entity with fee shaving and minimal capital retention.
             </p>
           </div>
 
           <button
-            onClick={() => handleLaunchScenario('scenario-c-circular', 'FG-2026-001')}
-            className="neu-btn px-3 py-1.5 rounded-xl text-xs font-semibold text-blue-400 hover:text-blue-300 flex items-center gap-1.5 cursor-pointer self-start"
+            onClick={() => handleLaunchScenario('scenario-c-circular', 'INV-2026-0173')}
+            className="neu-btn px-3.5 py-1.5 rounded-xl text-xs font-semibold text-blue-400 hover:text-blue-300 flex items-center gap-1.5 cursor-pointer self-start"
           >
-            <span>Inspect Network #1042</span>
+            <span>Inspect Case #INV-2026-0173</span>
             <ArrowRight className="w-3.5 h-3.5" />
           </button>
         </div>
@@ -67,283 +75,244 @@ export const DetectionCenterPage: React.FC = () => {
         {/* Directed Cycle Structure */}
         <div className="neu-inset-sm rounded-xl p-4 space-y-3">
           <div className="text-[10px] font-bold text-slate-400 uppercase tracking-wider font-mono">
-            Detected Cycle Topology: A → B → C → D → A
+            Detected Cycle Topology: A &rarr; B &rarr; C &rarr; D &rarr; A
           </div>
 
           <div className="flex flex-wrap items-center gap-2 font-mono text-xs">
             <span className="neu-btn px-2.5 py-1 rounded-lg text-white font-semibold">
-              ACC-1042 (HDFC)
+              ACC-1042 (HDFC Bank)
             </span>
-            <span className="text-slate-500">→</span>
+            <span className="text-slate-500">&rarr;</span>
             <span className="neu-btn px-2.5 py-1 rounded-lg text-slate-200">
-              ACC-1043 (ICICI)
+              ACC-1043 (ICICI Bank)
             </span>
-            <span className="text-slate-500">→</span>
+            <span className="text-slate-500">&rarr;</span>
             <span className="neu-btn px-2.5 py-1 rounded-lg text-slate-200">
-              ACC-1044 (Axis)
+              ACC-1044 (Axis Bank)
             </span>
-            <span className="text-slate-500">→</span>
+            <span className="text-slate-500">&rarr;</span>
             <span className="neu-btn px-2.5 py-1 rounded-lg text-slate-200">
-              ACC-1045 (SBI)
+              ACC-1045 (State Bank of India)
             </span>
-            <span className="text-slate-500">→</span>
+            <span className="text-slate-500">&rarr;</span>
             <span className="neu-btn px-2.5 py-1 rounded-lg text-red-400 border border-red-500/30 font-bold">
-              ACC-1042 (Returned)
+              ACC-1042 (Returned Originator)
             </span>
           </div>
 
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 pt-3 border-t border-white/[0.06] text-xs">
-            <div>
-              <span className="text-slate-400 text-[10px] block font-mono">Cycle Length</span>
-              <span className="font-bold text-white mt-0.5 block">4 Entities</span>
+          {/* Key Metrics Required in Prompt 5 */}
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-3 pt-3 border-t border-white/[0.06] text-xs">
+            <div className="neu-inset-sm p-2.5 rounded-xl">
+              <span className="text-slate-400 text-[10px] block font-mono">Total Amount</span>
+              <span className="font-extrabold text-white text-sm font-mono-numbers mt-0.5 block">₹4.82 Cr</span>
             </div>
-            <div>
-              <span className="text-slate-400 text-[10px] block font-mono">Cycle Duration</span>
-              <span className="font-bold text-amber-400 mt-0.5 block">41 Minutes</span>
+            <div className="neu-inset-sm p-2.5 rounded-xl">
+              <span className="text-slate-400 text-[10px] block font-mono">Number of Hops</span>
+              <span className="font-extrabold text-cyan-400 text-sm font-mono-numbers mt-0.5 block">4 Hops</span>
             </div>
-            <div>
-              <span className="text-slate-400 text-[10px] block font-mono">Value Retention</span>
-              <span className="font-bold text-emerald-400 mt-0.5 block">94.3% Retained</span>
+            <div className="neu-inset-sm p-2.5 rounded-xl">
+              <span className="text-slate-400 text-[10px] block font-mono">Time Taken</span>
+              <span className="font-extrabold text-amber-400 text-sm font-mono-numbers mt-0.5 block">26 Minutes</span>
             </div>
-            <div>
-              <span className="text-slate-400 text-[10px] block font-mono">Occurrences</span>
-              <span className="font-bold text-red-400 mt-0.5 block">3 Sequences</span>
+            <div className="neu-inset-sm p-2.5 rounded-xl">
+              <span className="text-slate-400 text-[10px] block font-mono">Institutions Involved</span>
+              <span className="font-extrabold text-blue-400 text-sm font-mono-numbers mt-0.5 block">4 Core Banks</span>
             </div>
+          </div>
+
+          {/* Secondary Details */}
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 text-[11px] font-mono text-slate-300 pt-1">
+            <div>First Transaction: <strong className="text-white">09:31:12 IST</strong></div>
+            <div>Last Transaction: <strong className="text-white">09:57:33 IST</strong></div>
+            <div>Capital Value Return: <strong className="text-emerald-400">94.3% (Fee Shaved)</strong></div>
           </div>
         </div>
       </div>
 
-      {/* SECTION 2: RAPID PASS-THROUGH DETECTION */}
-      <div className="neu-card p-5 space-y-4">
+      {/* PATTERN 2: MULE / RAPID PASS-THROUGH (Requirement 5) */}
+      <div className="neu-card p-6 space-y-4 border-l-4 border-l-amber-500">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-white/[0.06] pb-3">
           <div>
             <div className="flex items-center gap-2">
               <h2 className="text-base font-bold text-white flex items-center gap-2">
                 <Zap className="w-4 h-4 text-amber-400" />
-                Rapid Pass-through & Mule Chain Engine
+                <span>Rapid Pass-Through Chain</span>
               </h2>
               <span className="px-2.5 py-0.5 rounded-full text-[10px] font-mono font-bold bg-amber-500/20 text-amber-400 border border-amber-500/30">
-                27 active chains
+                17 Transactions Detected
               </span>
             </div>
             <p className="text-xs text-slate-400 mt-0.5">
-              Identifies funds moving through multiple intermediary accounts within unusually brief holding windows.
+              Rapid onward dispatch of incoming funds where intermediary accounts maintain near-zero balances and holding time &lt; 8 minutes.
             </p>
           </div>
 
           <button
             onClick={() => handleLaunchScenario('scenario-b-rapid', 'FG-2026-002')}
-            className="neu-btn px-3 py-1.5 rounded-xl text-xs font-semibold text-blue-400 hover:text-blue-300 flex items-center gap-1.5 cursor-pointer self-start"
+            className="neu-btn px-3.5 py-1.5 rounded-xl text-xs font-semibold text-blue-400 hover:text-blue-300 flex items-center gap-1.5 cursor-pointer self-start"
           >
-            <span>Inspect Mule Chain #2041</span>
+            <span>Inspect Linear Chain</span>
             <ArrowRight className="w-3.5 h-3.5" />
           </button>
         </div>
 
+        {/* Directed Chain Topology */}
         <div className="neu-inset-sm rounded-xl p-4 space-y-3">
           <div className="text-[10px] font-bold text-slate-400 uppercase tracking-wider font-mono">
-            Detected Chain Topology: A → B → C → D → E
+            Detected Relay Topology: A &rarr; B &rarr; C &rarr; D &rarr; E
           </div>
 
           <div className="flex flex-wrap items-center gap-2 font-mono text-xs">
-            <span className="neu-btn px-2.5 py-1 rounded-lg text-white font-medium">
-              Origin (ACC-2001)
+            <span className="neu-btn px-2.5 py-1 rounded-lg text-white font-semibold">
+              ACC-2001 (Source)
             </span>
-            <span className="text-slate-500">→</span>
-            <span className="neu-btn px-2.5 py-1 rounded-lg text-red-400 border border-red-500/30">
-              Intermediary 1 (ACC-2002)
+            <span className="text-slate-500">&rarr;</span>
+            <span className="neu-btn px-2.5 py-1 rounded-lg text-amber-300">
+              ACC-2002 (Mule 1)
             </span>
-            <span className="text-slate-500">→</span>
-            <span className="neu-btn px-2.5 py-1 rounded-lg text-red-400 border border-red-500/30">
-              Intermediary 2 (ACC-2003)
+            <span className="text-slate-500">&rarr;</span>
+            <span className="neu-btn px-2.5 py-1 rounded-lg text-amber-300">
+              ACC-2003 (Mule 2)
             </span>
-            <span className="text-slate-500">→</span>
-            <span className="neu-btn px-2.5 py-1 rounded-lg text-red-400 border border-red-500/30">
-              Intermediary 3 (ACC-2004)
+            <span className="text-slate-500">&rarr;</span>
+            <span className="neu-btn px-2.5 py-1 rounded-lg text-amber-300">
+              ACC-2004 (Mule 3)
             </span>
-            <span className="text-slate-500">→</span>
-            <span className="neu-btn px-2.5 py-1 rounded-lg text-cyan-400 font-bold border border-cyan-500/30">
-              Terminal Sink (ACC-2005)
+            <span className="text-slate-500">&rarr;</span>
+            <span className="neu-btn px-2.5 py-1 rounded-lg text-red-400 font-bold">
+              ACC-2005 (Cashout Terminal)
             </span>
           </div>
 
-          <div className="grid grid-cols-2 md:grid-cols-5 gap-4 pt-3 border-t border-white/[0.06] text-xs">
-            <div>
-              <span className="text-slate-400 text-[10px] block font-mono">Total Duration</span>
-              <span className="font-bold text-amber-400 mt-0.5 block">16m 28s</span>
+          {/* Metrics Required in Prompt 5 */}
+          <div className="grid grid-cols-2 md:grid-cols-5 gap-3 pt-3 border-t border-white/[0.06] text-xs">
+            <div className="neu-inset-sm p-2.5 rounded-xl">
+              <span className="text-slate-400 text-[10px] block font-mono">Transactions</span>
+              <span className="font-extrabold text-white text-sm font-mono-numbers mt-0.5 block">17 txns</span>
             </div>
-            <div>
-              <span className="text-slate-400 text-[10px] block font-mono">Avg Holding Time</span>
-              <span className="font-bold text-red-400 mt-0.5 block">5.6 min / hop</span>
+            <div className="neu-inset-sm p-2.5 rounded-xl">
+              <span className="text-slate-400 text-[10px] block font-mono">Accounts</span>
+              <span className="font-extrabold text-cyan-400 text-sm font-mono-numbers mt-0.5 block">5 accounts</span>
             </div>
-            <div>
-              <span className="text-slate-400 text-[10px] block font-mono">Intermediaries</span>
-              <span className="font-bold text-white mt-0.5 block">3 Mules</span>
+            <div className="neu-inset-sm p-2.5 rounded-xl">
+              <span className="text-slate-400 text-[10px] block font-mono">Institutions</span>
+              <span className="font-extrabold text-blue-400 text-sm font-mono-numbers mt-0.5 block">4 banks</span>
             </div>
-            <div>
-              <span className="text-slate-400 text-[10px] block font-mono">Gross Volume</span>
-              <span className="font-bold text-white font-mono-numbers mt-0.5 block">₹14.50 Lakh</span>
+            <div className="neu-inset-sm p-2.5 rounded-xl">
+              <span className="text-slate-400 text-[10px] block font-mono">Aggregate Volume</span>
+              <span className="font-extrabold text-emerald-400 text-sm font-mono-numbers mt-0.5 block">₹82.4L</span>
             </div>
-            <div>
-              <span className="text-slate-400 text-[10px] block font-mono">Pass-Through Ratio</span>
-              <span className="font-bold text-emerald-400 mt-0.5 block">98.6%</span>
+            <div className="neu-inset-sm p-2.5 rounded-xl">
+              <span className="text-slate-400 text-[10px] block font-mono">Elapsed Duration</span>
+              <span className="font-extrabold text-amber-400 text-sm font-mono-numbers mt-0.5 block">3h 42m</span>
             </div>
           </div>
         </div>
       </div>
 
-      {/* SECTION 3: SMURFING DETECTION */}
-      <div className="neu-card p-5 space-y-4">
+      {/* PATTERN 3: SMURFING / STRUCTURING (Requirement 5) */}
+      <div className="neu-card p-6 space-y-4 border-l-4 border-l-cyan-500">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-white/[0.06] pb-3">
           <div>
             <div className="flex items-center gap-2">
               <h2 className="text-base font-bold text-white flex items-center gap-2">
                 <Layers className="w-4 h-4 text-cyan-400" />
-                Smurfing & Structuring Aggregator
+                <span>Potential Structuring / Smurfing Pattern</span>
               </h2>
               <span className="px-2.5 py-0.5 rounded-full text-[10px] font-mono font-bold bg-cyan-500/20 text-cyan-400 border border-cyan-500/30">
-                18 active clusters
+                Sub-Threshold Dispersal
               </span>
             </div>
             <p className="text-xs text-slate-400 mt-0.5">
-              Identifies multiple structured transfers just below statutory reporting limits aggregating into a collector account.
+              Origin account splits large value into multiple sub-₹10 Lakh tranches to avoid mandatory regulatory currency reporting.
             </p>
           </div>
 
           <button
             onClick={() => handleLaunchScenario('scenario-d-smurfing', 'FG-2026-003')}
-            className="neu-btn px-3 py-1.5 rounded-xl text-xs font-semibold text-blue-400 hover:text-blue-300 flex items-center gap-1.5 cursor-pointer self-start"
+            className="neu-btn px-3.5 py-1.5 rounded-xl text-xs font-semibold text-blue-400 hover:text-blue-300 flex items-center gap-1.5 cursor-pointer self-start"
           >
-            <span>Inspect Cluster #3088</span>
+            <span>Inspect Smurfing Ring</span>
             <ArrowRight className="w-3.5 h-3.5" />
           </button>
         </div>
 
+        {/* ASCII Topology matching prompt */}
         <div className="neu-inset-sm rounded-xl p-4 space-y-3">
           <div className="text-[10px] font-bold text-slate-400 uppercase tracking-wider font-mono">
-            Detected Cluster Flow: Source Mules ↓ Multiple Sub-₹50k Transfers ↓ Aggregator Sink
+            Fan-Out Structuring Topology
           </div>
 
-          <div className="grid grid-cols-2 md:grid-cols-5 gap-4 pt-1 text-xs">
-            <div>
-              <span className="text-slate-400 text-[10px] block font-mono">Structured Transfers</span>
-              <span className="font-bold text-white mt-0.5 block">12 transfers</span>
+          <div className="font-mono text-xs text-cyan-400 space-y-1">
+            <pre className="text-slate-300 leading-relaxed overflow-x-auto">
+{`       ┌→ ACC-3011 (ICICI)   ₹9.2L  [4m interval]
+       ├→ ACC-3012 (Axis)    ₹8.8L  [8m interval]
+ACC-3001 ──┼→ ACC-3013 (SBI)     ₹9.5L  [14m interval]
+       └→ ACC-3014 (YES Bank) ₹8.9L  [18m interval]`}
+            </pre>
+          </div>
+
+          {/* Metrics Required in Prompt 5 */}
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-3 pt-3 border-t border-white/[0.06] text-xs">
+            <div className="neu-inset-sm p-2.5 rounded-xl">
+              <span className="text-slate-400 text-[10px] block font-mono">Origin Account</span>
+              <span className="font-extrabold text-white text-xs font-mono mt-0.5 block">ACC-3001 (Zenith Holdings)</span>
             </div>
-            <div>
-              <span className="text-slate-400 text-[10px] block font-mono">Aggregate Value</span>
-              <span className="font-bold text-white font-mono-numbers mt-0.5 block">₹8.42 Lakh</span>
+            <div className="neu-inset-sm p-2.5 rounded-xl">
+              <span className="text-slate-400 text-[10px] block font-mono">Recipients</span>
+              <span className="font-extrabold text-cyan-400 text-sm font-mono-numbers mt-0.5 block">4 Mule Accounts</span>
             </div>
-            <div>
-              <span className="text-slate-400 text-[10px] block font-mono">Execution Window</span>
-              <span className="font-bold text-amber-400 mt-0.5 block">1h 40m</span>
+            <div className="neu-inset-sm p-2.5 rounded-xl">
+              <span className="text-slate-400 text-[10px] block font-mono">Amounts</span>
+              <span className="font-extrabold text-amber-400 text-xs font-mono mt-0.5 block">All &lt; ₹10L Threshold</span>
             </div>
-            <div>
-              <span className="text-slate-400 text-[10px] block font-mono">Value Band</span>
-              <span className="font-bold text-white font-mono-numbers mt-0.5 block">₹48k – ₹49.8k</span>
-            </div>
-            <div>
-              <span className="text-slate-400 text-[10px] block font-mono">Collector Account</span>
-              <span className="font-bold text-cyan-400 mt-0.5 block">1 Bullion Entity</span>
+            <div className="neu-inset-sm p-2.5 rounded-xl">
+              <span className="text-slate-400 text-[10px] block font-mono">Spread</span>
+              <span className="font-extrabold text-blue-400 text-xs font-mono mt-0.5 block">4 Banks • 3 States</span>
             </div>
           </div>
         </div>
       </div>
 
-      {/* SECTION 4: LEGITIMATE HIGH-VOLUME FILTER (BEHAVIOR CLASSIFICATION) */}
-      <div className="neu-card p-6 space-y-4">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-white/[0.06] pb-3">
+      {/* BENIGN COMMERCE SECTION (Requirement 8) */}
+      <div className="neu-card p-6 space-y-4 border-l-4 border-l-emerald-500">
+        <div className="flex items-center justify-between border-b border-white/[0.06] pb-3">
           <div>
-            <div className="flex items-center gap-2">
-              <h2 className="text-base font-bold text-white flex items-center gap-2">
-                <Scale className="w-4 h-4 text-emerald-400" />
-                Behavior Classification: High Transaction Volume Exemption
-              </h2>
-              <span className="px-2.5 py-0.5 rounded-full text-[10px] font-mono font-bold bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">
-                False Positive Eliminator
-              </span>
-            </div>
+            <h2 className="text-base font-bold text-white tracking-tight flex items-center gap-2">
+              <CheckCircle2 className="w-4 h-4 text-emerald-400" />
+              <span>Benign Commerce Exemption Engine</span>
+            </h2>
             <p className="text-xs text-slate-400 mt-0.5">
-              Distinguishes high-volume legitimate commercial accounts from coordinated financial crime networks.
+              Distinguishes high-volume legitimate businesses from money laundering rings using business metadata and counterparty stability.
             </p>
           </div>
-
           <button
             onClick={() => handleLaunchScenario('scenario-a-legitimate', 'FG-2026-004')}
-            className="neu-btn px-3 py-1.5 rounded-xl text-xs font-semibold text-blue-400 hover:text-blue-300 flex items-center gap-1.5 cursor-pointer self-start"
+            className="neu-btn px-3 py-1.5 rounded-xl text-xs font-semibold text-emerald-400 hover:text-emerald-300 cursor-pointer"
           >
-            <span>Inspect Exemption #1010</span>
-            <ArrowRight className="w-3.5 h-3.5" />
+            <span>View Exemption Ledger</span>
           </button>
         </div>
 
-        {/* Side-by-Side Comparison Neumorphic Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {/* Normal Business Activity */}
-          <div className="border border-emerald-500/30 rounded-2xl p-4 bg-emerald-950/20 space-y-3 neu-inset-sm">
-            <div className="flex items-center justify-between">
-              <span className="text-xs font-bold text-emerald-400 uppercase tracking-wider flex items-center gap-1.5 font-mono">
-                <CheckCircle2 className="w-4 h-4 text-emerald-400" />
-                NORMAL BUSINESS ACTIVITY
-              </span>
-              <span className="text-[10px] text-emerald-400 font-bold bg-[#141A28] px-2.5 py-0.5 rounded-full border border-emerald-500/30 font-mono">
-                Risk Score: 14/100
-              </span>
-            </div>
-            <p className="text-xs text-slate-300">
-              Example: Apex Wholesale Logistics (₹34.2 Cr). High volume is reconciled against commercial baseline:
-            </p>
-            <ul className="space-y-2 text-xs text-slate-200">
-              <li className="flex items-start gap-2">
-                <span className="text-emerald-400 font-bold">✓</span>
-                <span><strong>Stable counterparties:</strong> Recurring bilateral trade relationships with verified retail partners.</span>
-              </li>
-              <li className="flex items-start gap-2">
-                <span className="text-emerald-400 font-bold">✓</span>
-                <span><strong>Commercial contracts:</strong> Documented invoice settlement cycles over 36 months.</span>
-              </li>
-              <li className="flex items-start gap-2">
-                <span className="text-emerald-400 font-bold">✓</span>
-                <span><strong>Regular timing:</strong> Predictable settlement intervals aligning with standard 14 to 30-day payment terms.</span>
-              </li>
-              <li className="flex items-start gap-2">
-                <span className="text-emerald-400 font-bold">✓</span>
-                <span><strong>Consistent transaction behavior:</strong> Predictable day-of-week cadence during business hours.</span>
-              </li>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
+          <div className="neu-inset-sm p-3.5 rounded-xl space-y-2">
+            <span className="text-emerald-400 font-bold block">Why Legitimate Volume Is Exempted:</span>
+            <ul className="space-y-1.5 text-slate-300 text-[11px] leading-relaxed">
+              <li>&bull; <strong className="text-white">Recurring merchant settlement pattern:</strong> Predictable daily batches at commercial clearing hours.</li>
+              <li>&bull; <strong className="text-white">Consistent counterparties:</strong> Long-term vendor relationships verified via commercial invoices.</li>
+              <li>&bull; <strong className="text-white">Stable transaction intervals:</strong> 15–30 day normal commercial holding periods.</li>
+              <li>&bull; <strong className="text-white">Zero circular fund movement:</strong> Proceeds remain in operational capital or shareholder dividends.</li>
             </ul>
           </div>
 
-          {/* Suspicious Network Activity */}
-          <div className="border border-red-500/30 rounded-2xl p-4 bg-red-950/20 space-y-3 neu-inset-sm">
-            <div className="flex items-center justify-between">
-              <span className="text-xs font-bold text-red-400 uppercase tracking-wider flex items-center gap-1.5 font-mono">
-                <AlertTriangle className="w-4 h-4 text-red-400" />
-                SUSPICIOUS NETWORK ACTIVITY
-              </span>
-              <span className="text-[10px] text-red-400 font-bold bg-[#141A28] px-2.5 py-0.5 rounded-full border border-red-500/30 font-mono">
-                Risk Score: 94/100
-              </span>
+          <div className="neu-inset-sm p-3.5 rounded-xl space-y-2 font-mono text-[11px]">
+            <span className="text-slate-400 font-bold block uppercase">Exempted Control Network:</span>
+            <div className="text-white font-bold">Reliance Retail Wholesale & FMCG Logistics</div>
+            <div className="text-slate-400">Monthly Volume: ₹342.8 Cr • Counterparties: 148 Verified Suppliers</div>
+            <div className="text-slate-400">Tax Audits: Verified GST e-way bills + MCA director disclosures</div>
+            <div className="text-emerald-400 font-semibold pt-1">
+              &check; Classifier Decision: EXEMPT (Risk Score: 12/100)
             </div>
-            <p className="text-xs text-slate-300">
-              Example: Global Horizon Trading Network (₹2.84 Cr). Flagged due to coordinated structural anomalies:
-            </p>
-            <ul className="space-y-2 text-xs text-slate-200">
-              <li className="flex items-start gap-2">
-                <span className="text-red-400 font-bold">✕</span>
-                <span><strong>Unusual counterparties:</strong> Newly incorporated shell entities with no physical footprint.</span>
-              </li>
-              <li className="flex items-start gap-2">
-                <span className="text-red-400 font-bold">✕</span>
-                <span><strong>Rapid velocity:</strong> Intermediary holding durations under 8 minutes across banking hops.</span>
-              </li>
-              <li className="flex items-start gap-2">
-                <span className="text-red-400 font-bold">✕</span>
-                <span><strong>Circular relationships:</strong> Directed graph loops returning 94%+ of funds to the originator.</span>
-              </li>
-              <li className="flex items-start gap-2">
-                <span className="text-red-400 font-bold">✕</span>
-                <span><strong>Temporal clustering:</strong> Off-market execution within coordinated micro-windows.</span>
-              </li>
-            </ul>
           </div>
         </div>
       </div>
