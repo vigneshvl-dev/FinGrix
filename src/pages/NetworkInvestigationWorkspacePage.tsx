@@ -38,22 +38,26 @@ export const NetworkInvestigationWorkspacePage: React.FC = () => {
   return (
     <div className="flex flex-col h-[calc(100vh-3.5rem)] w-full overflow-hidden select-none bg-[#0C1019] font-sans">
       {/* Neumorphic Workspace Context Header Bar */}
-      <div className="h-13 bg-[#0E131E] border-b border-white/[0.06] shadow-[0_2px_12px_rgba(0,0,0,0.5)] px-5 flex items-center justify-between flex-shrink-0 z-10">
-        <div className="flex items-center gap-3">
-          <span className="font-mono text-xs font-bold text-blue-400 neu-inset-sm px-2.5 py-1 rounded-lg border border-blue-500/30">
-            {currentCase.id}
+      <div className="bg-[#0E131E] border-b border-white/[0.06] shadow-[0_2px_12px_rgba(0,0,0,0.5)] px-5 py-2.5 flex flex-col md:flex-row md:items-center justify-between gap-3 flex-shrink-0 z-10">
+        <div className="flex flex-wrap items-center gap-2.5">
+          <span className="font-mono text-xs font-extrabold text-blue-400 neu-inset-sm px-2.5 py-1 rounded-lg border border-blue-500/30">
+            CASE #{currentCase.id}
           </span>
           <h1 className="text-xs sm:text-sm font-bold text-white tracking-tight">
             {currentCase.title}
           </h1>
           <span className="text-slate-600">•</span>
-          <span className="text-[11px] font-mono font-semibold text-amber-400 neu-pill px-2.5 py-0.5 border border-amber-500/30">
-            Status: {currentCase.status}
+          <span className="text-[10px] font-mono font-bold text-red-400 neu-pill px-2.5 py-0.5 border border-red-500/30 bg-red-500/10">
+            Risk Level: HIGH / CRITICAL
+          </span>
+          <span className="text-slate-600">•</span>
+          <span className="text-[10px] font-mono font-semibold text-amber-400 neu-pill px-2.5 py-0.5 border border-amber-500/30">
+            Pattern: Circular + Rapid Pass-Through
           </span>
         </div>
 
         {/* Header Actions: Neumorphic buttons */}
-        <div className="flex items-center gap-2.5 text-xs">
+        <div className="flex items-center gap-2 text-xs">
           {saveStatus && (
             <span className="text-emerald-400 text-xs font-semibold flex items-center gap-1.5 mr-2 animate-pulse font-mono">
               <Check className="w-3.5 h-3.5" />
@@ -83,6 +87,21 @@ export const NetworkInvestigationWorkspacePage: React.FC = () => {
             <ArrowRight className="w-3.5 h-3.5" />
           </button>
         </div>
+      </div>
+
+      {/* Case Quick Metadata Bar (Requirement 9) */}
+      <div className="bg-[#0A0D15] border-b border-white/[0.04] px-5 py-1.5 flex flex-wrap items-center gap-x-5 gap-y-1 text-[11px] font-mono text-slate-400">
+        <div>Amount: <strong className="text-white">₹4.82 Cr</strong></div>
+        <span className="text-slate-700">•</span>
+        <div>Accounts: <strong className="text-cyan-400">27</strong></div>
+        <span className="text-slate-700">•</span>
+        <div>Institutions: <strong className="text-blue-400">5 Banks</strong></div>
+        <span className="text-slate-700">•</span>
+        <div>Transactions: <strong className="text-white">184</strong></div>
+        <span className="text-slate-700">•</span>
+        <div>Time Window: <strong className="text-amber-400">18 Sep – 22 Sep 2026</strong></div>
+        <span className="text-slate-700">•</span>
+        <div>Lead Institution: <strong className="text-slate-200">{currentCase.leadInstitution}</strong></div>
       </div>
 
       {/* Main 3-Column Workspace */}

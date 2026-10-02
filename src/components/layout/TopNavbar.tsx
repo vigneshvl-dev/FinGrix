@@ -94,15 +94,24 @@ export const TopNavbar: React.FC = () => {
 
   const getPageTitle = () => {
     const path = location.pathname;
-    if (path.includes('/dashboard')) return 'Financial Network Overview';
+    if (path.includes('/dashboard')) return 'Financial Crime Investigation Center';
     if (path.includes('/investigations/')) return 'Network Investigation Workspace';
-    if (path.includes('/investigations')) return 'Investigation Center';
-    if (path.includes('/detection')) return 'Detection Center';
-    if (path.includes('/timeline')) return 'Transaction Timeline';
-    if (path.includes('/alerts')) return 'Compliance Alerts';
+    if (path.includes('/investigations')) return 'Investigation Cases';
+    if (path.includes('/transactions')) return 'Transaction Ledger Explorer';
+    if (path.includes('/detection') || path.includes('/patterns')) return 'Pattern Detection & Typologies';
+    if (path.includes('/temporal')) return 'Temporal Analysis & Velocity';
+    if (path.includes('/timeline')) return 'Investigation Timeline';
+    if (path.includes('/fund-flow')) return 'Fund Flow & Multi-Hop Tracer';
+    if (path.includes('/account-clusters')) return 'Account Clusters & Syndicates';
+    if (path.includes('/entity-intelligence')) return 'Entity Intelligence & Profiling';
+    if (path.includes('/alerts')) return 'Compliance Alerts Inbox';
     if (path.includes('/cases')) return 'Case Management';
-    if (path.includes('/reports')) return 'Compliance Reports';
-    return 'Financial Network Overview';
+    if (path.includes('/evidence')) return 'Forensic Evidence Vault';
+    if (path.includes('/reports')) return 'Forensic Investigation Dossier';
+    if (path.includes('/data-sources')) return 'Data Sources & Log Ingestion';
+    if (path.includes('/institutions')) return 'Core Institution Clearing Network';
+    if (path.includes('/settings')) return 'Forensic Engine Configuration';
+    return 'Financial Crime Investigation Center';
   };
 
   return (
