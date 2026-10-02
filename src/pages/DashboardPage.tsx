@@ -8,7 +8,15 @@ import {
   AlertTriangle,
   ShieldAlert,
   Layers,
-  Activity
+  Activity,
+  Repeat,
+  Zap,
+  Clock,
+  CheckCircle2,
+  FileText,
+  Sliders,
+  Share2,
+  Database
 } from 'lucide-react';
 import { 
   ResponsiveContainer, 
@@ -20,8 +28,9 @@ import {
   CartesianGrid 
 } from 'recharts';
 import { useInvestigation } from '../context/InvestigationContext';
-import { FLOW_ANALYTICS_DATA } from '../data/mockData';
+import { FLOW_ANALYTICS_DATA, TEMPORAL_CHRONOLOGY, BENIGN_COMMERCE_ITEMS } from '../data/mockData';
 import { ScenarioType } from '../types';
+import { HeroInvestigationGraph } from '../components/network/HeroInvestigationGraph';
 
 export const DashboardPage: React.FC = () => {
   const navigate = useNavigate();
@@ -41,23 +50,30 @@ export const DashboardPage: React.FC = () => {
 
   return (
     <div className="p-6 md:p-8 space-y-6 max-w-7xl mx-auto select-none font-sans">
-      {/* 1. Page Title and Context Bar */}
+      {/* 1. Page Title and Context Bar (Requirement 1) */}
       <div>
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
           <div>
             <h1 className="text-2xl font-extrabold text-white tracking-tight flex items-center gap-2.5">
-              <span>Financial Network Surveillance</span>
+              <span>Financial Crime Investigation Center</span>
               <span className="w-2 h-2 rounded-full bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.8)]" />
             </h1>
             <p className="text-xs sm:text-sm text-slate-400 mt-1">
-              Cross-institutional surveillance ledger, automated topology heuristics, and active multi-bank cases.
+              Trace coordinated fund flows, detect laundering patterns, and build evidence across financial institutions.
             </p>
           </div>
           
           <div className="flex items-center gap-2">
             <button
-              onClick={() => navigate('/investigations/FG-2026-001')}
-              className="neu-btn-primary px-3.5 py-2 rounded-xl text-xs font-semibold flex items-center gap-1.5 transition cursor-pointer"
+              onClick={() => navigate('/data-sources')}
+              className="neu-btn px-3.5 py-2 rounded-xl text-xs font-semibold text-slate-200 hover:text-white flex items-center gap-1.5 transition cursor-pointer"
+            >
+              <Database className="w-3.5 h-3.5 text-blue-400" />
+              <span>Data Ingestion</span>
+            </button>
+            <button
+              onClick={() => handleOpenCase('scenario-c-circular', 'INV-2026-0173')}
+              className="neu-btn-primary px-3.5 py-2 rounded-xl text-xs font-semibold flex items-center gap-1.5 transition cursor-pointer text-white"
             >
               <span>Launch Graph Workspace</span>
               <ArrowRight className="w-3.5 h-3.5" />
@@ -67,22 +83,22 @@ export const DashboardPage: React.FC = () => {
 
         {/* Contextual metadata bar */}
         <div className="mt-3.5 flex flex-wrap items-center gap-x-4 gap-y-1.5 text-xs text-slate-400 neu-inset-sm px-4 py-2 rounded-xl">
-          <span>Surveillance Window: <strong className="text-slate-200 font-mono">22 Sep – 28 Sep 2026</strong></span>
+          <span>Investigation Window: <strong className="text-slate-200 font-mono">18 Sep – 28 Sep 2026</strong></span>
           <span className="text-slate-600">•</span>
           <span>Federated Nodes: <strong className="text-blue-400 font-mono">5 Core Banks</strong></span>
           <span className="text-slate-600">•</span>
-          <span>Active Heuristic: <strong className="text-slate-200 font-medium">{scenario.name}</strong></span>
+          <span>Active Pattern: <strong className="text-slate-200 font-medium">Circular + Rapid Pass-Through</strong></span>
           <span className="text-slate-600">•</span>
-          <span>Engine Sync: <strong className="text-emerald-400 font-mono">Real-time (18ms)</strong></span>
+          <span>Heuristic Engine Sync: <strong className="text-emerald-400 font-mono">Real-time (18ms)</strong></span>
         </div>
       </div>
 
-      {/* 2. Key Metrics Row (Neumorphic Cards with Tactile Elevation) */}
+      {/* 2. Key Metrics Row - Exactly as Recommended in Prompt 3 */}
       <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
-        {/* Metric 1 */}
+        {/* Metric 1: Transactions Processed */}
         <div className="neu-card p-4 hover:translate-y-[-2px] transition-all">
           <div className="text-[11px] text-slate-400 font-medium flex items-center justify-between">
-            <span>Txns Analyzed</span>
+            <span>Transactions Processed</span>
             <Activity className="w-3.5 h-3.5 text-blue-400" />
           </div>
           <div className="text-2xl font-extrabold text-white mt-1 font-mono-numbers">
@@ -94,10 +110,10 @@ export const DashboardPage: React.FC = () => {
           </div>
         </div>
 
-        {/* Metric 2 */}
+        {/* Metric 2: Entities Identified */}
         <div className="neu-card p-4 hover:translate-y-[-2px] transition-all">
           <div className="text-[11px] text-slate-400 font-medium flex items-center justify-between">
-            <span>Accounts Monitored</span>
+            <span>Entities Identified</span>
             <Building2 className="w-3.5 h-3.5 text-cyan-400" />
           </div>
           <div className="text-2xl font-extrabold text-white mt-1 font-mono-numbers">
@@ -108,50 +124,264 @@ export const DashboardPage: React.FC = () => {
           </div>
         </div>
 
-        {/* Metric 3: Flagged Networks (Risk Red) */}
+        {/* Metric 3: Suspicious Networks (Prompt: +12 detected today) */}
         <div className="neu-card p-4 hover:translate-y-[-2px] transition-all border-red-500/20">
           <div className="text-[11px] text-red-300 font-medium flex items-center justify-between">
-            <span>Flagged Rings</span>
+            <span>Suspicious Networks</span>
             <ShieldAlert className="w-3.5 h-3.5 text-red-400 animate-pulse" />
           </div>
           <div className="text-2xl font-extrabold text-red-400 mt-1 font-mono-numbers">
             173
           </div>
           <div className="text-[11px] text-red-400 mt-1.5 font-semibold">
-            +12 high confidence
+            +12 detected today
           </div>
         </div>
 
-        {/* Metric 4: Flagged Accounts (Warning Amber) */}
+        {/* Metric 4: High-Risk Accounts (Prompt: 87 awaiting review) */}
         <div className="neu-card p-4 hover:translate-y-[-2px] transition-all border-amber-500/20">
           <div className="text-[11px] text-amber-300 font-medium flex items-center justify-between">
-            <span>Flagged Accounts</span>
+            <span>High-Risk Accounts</span>
             <AlertTriangle className="w-3.5 h-3.5 text-amber-400" />
           </div>
           <div className="text-2xl font-extrabold text-amber-400 mt-1 font-mono-numbers">
             1,284
           </div>
           <div className="text-[11px] text-amber-400 mt-1.5 font-semibold">
-            Quarantine review
+            87 awaiting review
           </div>
         </div>
 
-        {/* Metric 5: Open Investigations */}
+        {/* Metric 5: Active Investigations */}
         <div className="neu-card p-4 hover:translate-y-[-2px] transition-all">
           <div className="text-[11px] text-slate-400 font-medium flex items-center justify-between">
-            <span>Active Cases</span>
+            <span>Active Investigations</span>
             <Layers className="w-3.5 h-3.5 text-blue-400" />
           </div>
           <div className="text-2xl font-extrabold text-white mt-1 font-mono-numbers">
             46
           </div>
           <div className="text-[11px] text-blue-400 mt-1.5 font-medium">
-            Forensic ledgers active
+            14 escalated to FIU
           </div>
         </div>
       </div>
 
-      {/* 3. Main Analytics Section: Transaction Activity */}
+      {/* 3. HERO: Interactive Fund-Flow Graph (Requirement 4 & 14) */}
+      <div className="space-y-2">
+        <div className="flex items-center justify-between">
+          <div>
+            <h2 className="text-base font-bold text-white tracking-tight flex items-center gap-2">
+              <Share2 className="w-4 h-4 text-blue-400" />
+              <span>Interactive Fund-Flow Investigation Graph</span>
+            </h2>
+            <p className="text-xs text-slate-400 mt-0.5">
+              Live directional topology showing cross-bank fund movement, shell intermediaries, and circular return cycles. Click any node to open its forensic profile.
+            </p>
+          </div>
+
+          <div className="flex items-center gap-2">
+            <button
+              onClick={() => navigate('/fund-flow')}
+              className="neu-btn px-3 py-1.5 rounded-xl text-xs font-semibold text-blue-400 hover:text-blue-300 flex items-center gap-1 cursor-pointer"
+            >
+              <span>Multi-Hop Fund Trace</span>
+              <ArrowRight className="w-3.5 h-3.5" />
+            </button>
+          </div>
+        </div>
+
+        {/* Embedded Interactive Graph Canvas */}
+        <HeroInvestigationGraph />
+      </div>
+
+      {/* 4. Middle Section: Detection Patterns & Investigation Timeline (Requirement 5, 6, 14) */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        {/* Detection Patterns Summary */}
+        <div className="neu-card p-5 space-y-4">
+          <div className="flex items-center justify-between border-b border-white/[0.06] pb-3">
+            <div>
+              <h2 className="text-base font-bold text-white tracking-tight flex items-center gap-2">
+                <ShieldAlert className="w-4 h-4 text-red-400" />
+                <span>Detection Patterns Summary</span>
+              </h2>
+              <p className="text-xs text-slate-400 mt-0.5">
+                Automated multi-heuristic pattern recognition across 173 active networks.
+              </p>
+            </div>
+            <button
+              onClick={() => navigate('/detection')}
+              className="text-xs text-blue-400 font-semibold hover:underline flex items-center gap-1"
+            >
+              <span>Detection Center</span>
+              <ChevronRight className="w-3.5 h-3.5" />
+            </button>
+          </div>
+
+          <div className="space-y-2.5">
+            {/* Pattern 1: Circular */}
+            <div 
+              onClick={() => handleOpenCase('scenario-c-circular', 'INV-2026-0173')}
+              className="neu-btn p-3.5 rounded-xl flex items-center justify-between cursor-pointer hover:border-red-500/40 transition"
+            >
+              <div className="flex items-center gap-3">
+                <div className="w-9 h-9 rounded-xl neu-raised flex items-center justify-center text-red-400">
+                  <Repeat className="w-4 h-4" />
+                </div>
+                <div>
+                  <div className="font-bold text-white text-xs flex items-center gap-2">
+                    <span>Circular / Round-Tripping</span>
+                    <span className="font-mono text-[10px] text-slate-400">A &rarr; B &rarr; C &rarr; D &rarr; A</span>
+                  </div>
+                  <div className="text-[11px] text-slate-400 mt-0.5">
+                    4-hop closed cycle • 94.3% value retention • 26 min elapsed
+                  </div>
+                </div>
+              </div>
+              <div className="text-right">
+                <span className="text-base font-extrabold text-red-400 font-mono-numbers block">42</span>
+                <span className="text-[10px] font-mono text-slate-400">loops active</span>
+              </div>
+            </div>
+
+            {/* Pattern 2: Mule / Rapid Pass-Through */}
+            <div 
+              onClick={() => handleOpenCase('scenario-b-rapid', 'FG-2026-002')}
+              className="neu-btn p-3.5 rounded-xl flex items-center justify-between cursor-pointer hover:border-amber-500/40 transition"
+            >
+              <div className="flex items-center gap-3">
+                <div className="w-9 h-9 rounded-xl neu-raised flex items-center justify-center text-amber-400">
+                  <Zap className="w-4 h-4" />
+                </div>
+                <div>
+                  <div className="font-bold text-white text-xs flex items-center gap-2">
+                    <span>Mule / Rapid Pass-Through</span>
+                    <span className="font-mono text-[10px] text-slate-400">A &rarr; B &rarr; C &rarr; D &rarr; E</span>
+                  </div>
+                  <div className="text-[11px] text-slate-400 mt-0.5">
+                    17 txns • 5 accounts • 4 banks • ₹82.4L in 3h 42m
+                  </div>
+                </div>
+              </div>
+              <div className="text-right">
+                <span className="text-base font-extrabold text-amber-400 font-mono-numbers block">31</span>
+                <span className="text-[10px] font-mono text-slate-400">conduits flagged</span>
+              </div>
+            </div>
+
+            {/* Pattern 3: Smurfing */}
+            <div 
+              onClick={() => handleOpenCase('scenario-d-smurfing', 'FG-2026-003')}
+              className="neu-btn p-3.5 rounded-xl flex items-center justify-between cursor-pointer hover:border-blue-500/40 transition"
+            >
+              <div className="flex items-center gap-3">
+                <div className="w-9 h-9 rounded-xl neu-raised flex items-center justify-center text-cyan-400">
+                  <Layers className="w-4 h-4" />
+                </div>
+                <div>
+                  <div className="font-bold text-white text-xs flex items-center gap-2">
+                    <span>Potential Structuring / Smurfing</span>
+                    <span className="font-mono text-[10px] text-slate-400">A &rarr; (B, C, D, E) &lt; ₹10L</span>
+                  </div>
+                  <div className="text-[11px] text-slate-400 mt-0.5">
+                    Sub-threshold fan-in structuring • 4 recipient accounts • 44m window
+                  </div>
+                </div>
+              </div>
+              <div className="text-right">
+                <span className="text-base font-extrabold text-cyan-400 font-mono-numbers block">18</span>
+                <span className="text-[10px] font-mono text-slate-400">clusters detected</span>
+              </div>
+            </div>
+
+            {/* Benign High-Volume Commerce Filter */}
+            <div 
+              onClick={() => handleOpenCase('scenario-a-legitimate', 'FG-2026-004')}
+              className="neu-btn p-3 rounded-xl flex items-center justify-between cursor-pointer hover:border-emerald-500/40 transition bg-emerald-500/5 border border-emerald-500/20"
+            >
+              <div className="flex items-center gap-2.5">
+                <CheckCircle2 className="w-4 h-4 text-emerald-400 flex-shrink-0" />
+                <div>
+                  <span className="font-bold text-emerald-300 text-xs">Benign High-Volume Commerce Exemption</span>
+                  <p className="text-[10px] text-slate-400">
+                    64 legitimate merchant settlement & payroll networks exempted from false AML alerts
+                  </p>
+                </div>
+              </div>
+              <span className="text-xs font-mono font-bold text-emerald-400">64 Exempt</span>
+            </div>
+          </div>
+        </div>
+
+        {/* Investigation Timeline (Requirement 6: Sequence with velocity & burst indicators) */}
+        <div className="neu-card p-5 space-y-4">
+          <div className="flex items-center justify-between border-b border-white/[0.06] pb-3">
+            <div>
+              <h2 className="text-base font-bold text-white tracking-tight flex items-center gap-2">
+                <Clock className="w-4 h-4 text-blue-400" />
+                <span>Investigation Timeline (Active Case #173)</span>
+              </h2>
+              <p className="text-xs text-slate-400 mt-0.5">
+                Sequential fund movements, velocity intervals, and cross-bank transitions.
+              </p>
+            </div>
+            <span className="text-[11px] font-mono text-amber-400 neu-inset-sm px-2.5 py-0.5 rounded-lg">
+              Avg Hop: 4.8 min
+            </span>
+          </div>
+
+          <div className="space-y-2">
+            {TEMPORAL_CHRONOLOGY.map((step, idx) => (
+              <div 
+                key={idx}
+                className="neu-inset-sm p-2.5 rounded-xl flex items-center justify-between text-xs font-mono"
+              >
+                <div className="flex items-center gap-3">
+                  <span className="font-bold text-cyan-400 text-[11px] w-10">{step.time}</span>
+                  <div className="min-w-0">
+                    <span className="font-semibold text-white">{step.source}</span>
+                    <span className="text-slate-500 mx-1.5">&rarr;</span>
+                    <span className="font-semibold text-white">{step.target}</span>
+                  </div>
+                </div>
+
+                <div className="flex items-center gap-3">
+                  <span className="font-bold text-emerald-400 font-mono-numbers">{step.amountFormatted}</span>
+                  <span className={`text-[9px] px-2 py-0.5 rounded-md font-bold ${
+                    step.velocityAlert 
+                      ? 'bg-red-500/20 text-red-400 border border-red-500/30' 
+                      : 'bg-black/30 text-slate-400'
+                  }`}>
+                    {step.holdingTime}
+                  </span>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* Temporal Indicators Bar matching prompt */}
+          <div className="pt-2 border-t border-white/[0.06] grid grid-cols-2 sm:grid-cols-4 gap-2 text-[10px] font-mono">
+            <div className="neu-inset-sm p-2 rounded-lg">
+              <span className="text-slate-500 block">VELOCITY</span>
+              <span className="text-amber-400 font-bold">High (4.8m interval)</span>
+            </div>
+            <div className="neu-inset-sm p-2 rounded-lg">
+              <span className="text-slate-500 block">BURST DETECTED</span>
+              <span className="text-red-400 font-bold">5 txns in 69 min</span>
+            </div>
+            <div className="neu-inset-sm p-2 rounded-lg">
+              <span className="text-slate-500 block">REPEATED CYCLES</span>
+              <span className="text-white font-bold">2 Complete Loops</span>
+            </div>
+            <div className="neu-inset-sm p-2 rounded-lg">
+              <span className="text-slate-500 block">CROSS-BANK HOPS</span>
+              <span className="text-cyan-400 font-bold">4 Institutions</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* 5. Lower Section: Transaction Volume & Anomaly Flow Chart (Requirement 14) */}
       <div className="neu-card p-5 space-y-4">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-white/[0.06]">
           <div>
@@ -171,7 +401,7 @@ export const DashboardPage: React.FC = () => {
                 onClick={() => setTimeRange(r)}
                 className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all cursor-pointer ${
                   timeRange === r
-                    ? 'neu-raised text-white shadow-[2px_2px_6px_rgba(0,0,0,0.6),-1px_-1px_4px_rgba(255,255,255,0.05)]'
+                    ? 'neu-raised text-white shadow-sm'
                     : 'text-slate-400 hover:text-white'
                 }`}
               >
@@ -202,38 +432,27 @@ export const DashboardPage: React.FC = () => {
             onChange={(e) => setTypeFilter(e.target.value)}
             className="neu-input px-3 py-1.5 rounded-xl text-xs text-slate-200 cursor-pointer"
           >
-            <option value="all">All Settlement Types</option>
+            <option value="all">All Settlement Rails</option>
             <option value="rtgs">RTGS High-Value</option>
             <option value="neft">NEFT Standard</option>
             <option value="imps">IMPS Instant</option>
             <option value="wire">Cross-Border Wire</option>
           </select>
 
-          <select
-            value={riskFilter}
-            onChange={(e) => setRiskFilter(e.target.value)}
-            className="neu-input px-3 py-1.5 rounded-xl text-xs text-slate-200 cursor-pointer"
-          >
-            <option value="all">All Risk Levels</option>
-            <option value="critical">Critical / High Severity</option>
-            <option value="medium">Medium Flagged</option>
-            <option value="normal">Normal Monitored</option>
-          </select>
-
           <div className="ml-auto flex items-center gap-4 text-xs font-mono">
             <span className="flex items-center gap-1.5 text-slate-300">
-              <span className="w-3 h-1 bg-blue-500 inline-block rounded-full shadow-[0_0_6px_rgba(59,130,246,0.8)]"></span>
+              <span className="w-3 h-1 bg-blue-500 inline-block rounded-full"></span>
               Gross Volume
             </span>
             <span className="flex items-center gap-1.5 text-red-400">
-              <span className="w-3 h-1 bg-red-500 inline-block rounded-full shadow-[0_0_6px_rgba(239,68,68,0.8)]"></span>
+              <span className="w-3 h-1 bg-red-500 inline-block rounded-full"></span>
               Suspicious Flow
             </span>
           </div>
         </div>
 
-        {/* Clean Line Chart with Neumorphic Inset Frame */}
-        <div className="neu-inset-sm p-4 rounded-xl h-64 w-full">
+        {/* Clean Line Chart */}
+        <div className="neu-inset-sm p-4 rounded-xl h-60 w-full">
           <ResponsiveContainer width="100%" height="100%">
             <LineChart data={chartData} margin={{ top: 10, right: 10, left: 0, bottom: 0 }}>
               <CartesianGrid strokeDasharray="3 3" stroke="rgba(255, 255, 255, 0.05)" vertical={false} />
@@ -251,7 +470,6 @@ export const DashboardPage: React.FC = () => {
                   borderColor: 'rgba(255, 255, 255, 0.12)', 
                   borderRadius: '12px',
                   fontSize: '12px',
-                  boxShadow: '10px 10px 24px rgba(0, 0, 0, 0.8), -4px -4px 10px rgba(255, 255, 255, 0.04)',
                   color: '#F8FAFC'
                 }}
                 formatter={(val: any, name: any) => [
@@ -276,144 +494,88 @@ export const DashboardPage: React.FC = () => {
             </LineChart>
           </ResponsiveContainer>
         </div>
-
-        {/* Professional Insight text */}
-        <div className="pt-2 text-xs text-slate-400 flex items-center justify-between">
-          <span className="flex items-center gap-1.5">
-            <span className="w-1.5 h-1.5 rounded-full bg-blue-400" />
-            <span>Forensic Heuristic: Concentrated velocity spike observed between 18:00–22:00 IST across private clearing hubs.</span>
-          </span>
-          <span className="text-[11px] font-mono text-slate-500">15-minute inter-bank settlement</span>
-        </div>
       </div>
 
-      {/* 4. Detection Summary (Neumorphic Card Table) */}
-      <div className="neu-card overflow-hidden">
-        <div className="p-4 border-b border-white/[0.06] flex items-center justify-between">
+      {/* 6. Benign Activity Classification (Requirement 8) */}
+      <div className="neu-card p-6 space-y-4">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-white/[0.06] pb-3">
           <div>
-            <h2 className="text-base font-bold text-white tracking-tight">
-              Detected Topology Patterns
+            <h2 className="text-base font-bold text-white tracking-tight flex items-center gap-2">
+              <CheckCircle2 className="w-4 h-4 text-emerald-400" />
+              <span>Activity Classification & Benign Commerce Filtering</span>
             </h2>
             <p className="text-xs text-slate-400 mt-0.5">
-              Live automated graph analysis detecting smurfing rings, circular layering, and rapid funneling.
+              Prevents high-volume legitimate businesses from being misclassified. Distinguishes normal commerce from layering rings.
             </p>
           </div>
-          <button 
-            onClick={() => navigate('/detection')}
-            className="neu-btn px-3 py-1.5 rounded-xl text-xs font-semibold text-blue-400 hover:text-blue-300 flex items-center gap-1.5 cursor-pointer"
-          >
-            <span>Detection Center</span>
-            <ArrowRight className="w-3.5 h-3.5" />
-          </button>
+          <span className="text-xs font-mono text-emerald-400 neu-inset-sm px-3 py-1 rounded-xl">
+            Heuristic Rule: Not Every High-Volume Account Is Suspicious
+          </span>
         </div>
 
-        <div className="overflow-x-auto">
-          <table className="w-full text-left text-xs">
-            <thead className="neu-inset-sm border-b border-white/[0.06] text-[10px] font-bold text-slate-400 uppercase font-mono">
-              <tr>
-                <th className="py-3 px-4">Pattern Signature</th>
-                <th className="py-3 px-4 font-mono-numbers">Networks</th>
-                <th className="py-3 px-4 font-mono-numbers">Accounts</th>
-                <th className="py-3 px-4 font-mono-numbers">Aggregated Value</th>
-                <th className="py-3 px-4">Surveillance Status</th>
-                <th className="py-3 px-4">Last Detected</th>
-                <th className="py-3 px-4 text-right">Workspace Action</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-white/[0.04]">
-              <tr 
-                onClick={() => handleOpenCase('scenario-c-circular', 'FG-2026-001')}
-                className="hover:bg-white/[0.03] cursor-pointer transition-colors"
-              >
-                <td className="py-3 px-4 font-bold text-white flex items-center gap-2">
-                  <span className="w-2 h-2 rounded-full bg-red-500 shadow-[0_0_6px_rgba(239,68,68,0.8)]" />
-                  Circular Layering Loop
-                </td>
-                <td className="py-3 px-4 font-mono-numbers text-white">12</td>
-                <td className="py-3 px-4 font-mono-numbers text-slate-300">84</td>
-                <td className="py-3 px-4 font-mono-numbers font-bold text-white">₹4.2 Cr</td>
-                <td className="py-3 px-4">
-                  <span className="px-2.5 py-0.5 rounded-full text-[10px] font-mono font-semibold bg-amber-500/20 text-amber-400 border border-amber-500/30">
-                    Review Required
-                  </span>
-                </td>
-                <td className="py-3 px-4 text-slate-400 font-mono text-[11px]">12 min ago</td>
-                <td className="py-3 px-4 text-right">
-                  <span className="text-blue-400 font-semibold hover:underline">Inspect Graph →</span>
-                </td>
-              </tr>
+        {/* 4 Classification Categories matching prompt 8 */}
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 text-xs">
+          <div className="neu-inset-sm p-3 rounded-xl border border-emerald-500/20">
+            <span className="text-emerald-400 font-bold block mb-1">1. Normal Commerce</span>
+            <span className="text-slate-300 text-[11px] leading-relaxed">
+              Standard retail UPI, salary fan-outs & verified consumer utility settlements.
+            </span>
+          </div>
+          <div className="neu-inset-sm p-3 rounded-xl border border-cyan-500/20">
+            <span className="text-cyan-400 font-bold block mb-1">2. High-Volume Legitimate</span>
+            <span className="text-slate-300 text-[11px] leading-relaxed">
+              Wholesale FMCG, merchant acquirers, corporate tax & supply chain batch settlements.
+            </span>
+          </div>
+          <div className="neu-inset-sm p-3 rounded-xl border border-amber-500/20">
+            <span className="text-amber-400 font-bold block mb-1">3. Unusual (Under Review)</span>
+            <span className="text-slate-300 text-[11px] leading-relaxed">
+              Temporary spikes in turnover, new counterparties, or sudden velocity increases.
+            </span>
+          </div>
+          <div className="neu-inset-sm p-3 rounded-xl border border-red-500/20">
+            <span className="text-red-400 font-bold block mb-1">4. Suspicious (Flagged AML)</span>
+            <span className="text-slate-300 text-[11px] leading-relaxed">
+              Closed circular loops, zero asset retention, and rapid pass-through conduits.
+            </span>
+          </div>
+        </div>
 
-              <tr 
-                onClick={() => handleOpenCase('scenario-b-rapid', 'FG-2026-002')}
-                className="hover:bg-white/[0.03] cursor-pointer transition-colors"
-              >
-                <td className="py-3 px-4 font-bold text-white flex items-center gap-2">
-                  <span className="w-2 h-2 rounded-full bg-amber-500 shadow-[0_0_6px_rgba(245,158,11,0.8)]" />
-                  Rapid Pass-Through Flow
-                </td>
-                <td className="py-3 px-4 font-mono-numbers text-white">27</td>
-                <td className="py-3 px-4 font-mono-numbers text-slate-300">146</td>
-                <td className="py-3 px-4 font-mono-numbers font-bold text-white">₹7.8 Cr</td>
-                <td className="py-3 px-4">
-                  <span className="px-2.5 py-0.5 rounded-full text-[10px] font-mono font-semibold bg-amber-500/20 text-amber-400 border border-amber-500/30">
-                    Review Required
-                  </span>
-                </td>
-                <td className="py-3 px-4 text-slate-400 font-mono text-[11px]">34 min ago</td>
-                <td className="py-3 px-4 text-right">
-                  <span className="text-blue-400 font-semibold hover:underline">Inspect Graph →</span>
-                </td>
-              </tr>
+        {/* Real Example from Prompt 8 */}
+        <div className="neu-card p-4 rounded-xl border border-emerald-500/30 bg-emerald-500/5 space-y-2 text-xs">
+          <div className="flex items-center justify-between">
+            <span className="font-bold text-white flex items-center gap-2">
+              <span className="w-2 h-2 rounded-full bg-emerald-500" />
+              <span>Verified Example: Benign High-Volume Commerce (Reliance Retail Settlement)</span>
+            </span>
+            <span className="px-2.5 py-0.5 rounded-full text-[10px] font-mono font-bold bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">
+              STATUS: EXEMPTED FROM AML ACTION
+            </span>
+          </div>
 
-              <tr 
-                onClick={() => handleOpenCase('scenario-d-smurfing', 'FG-2026-003')}
-                className="hover:bg-white/[0.03] cursor-pointer transition-colors"
-              >
-                <td className="py-3 px-4 font-bold text-white flex items-center gap-2">
-                  <span className="w-2 h-2 rounded-full bg-amber-500 shadow-[0_0_6px_rgba(245,158,11,0.8)]" />
-                  Smurfing Sub-Threshold Ring
-                </td>
-                <td className="py-3 px-4 font-mono-numbers text-white">18</td>
-                <td className="py-3 px-4 font-mono-numbers text-slate-300">231</td>
-                <td className="py-3 px-4 font-mono-numbers font-bold text-white">₹2.1 Cr</td>
-                <td className="py-3 px-4">
-                  <span className="px-2.5 py-0.5 rounded-full text-[10px] font-mono font-semibold bg-amber-500/20 text-amber-400 border border-amber-500/30">
-                    Review Required
-                  </span>
-                </td>
-                <td className="py-3 px-4 text-slate-400 font-mono text-[11px]">1 hour ago</td>
-                <td className="py-3 px-4 text-right">
-                  <span className="text-blue-400 font-semibold hover:underline">Inspect Graph →</span>
-                </td>
-              </tr>
-
-              <tr 
-                onClick={() => handleOpenCase('scenario-a-legitimate', 'FG-2026-004')}
-                className="hover:bg-white/[0.03] cursor-pointer transition-colors"
-              >
-                <td className="py-3 px-4 font-bold text-white flex items-center gap-2">
-                  <span className="w-2 h-2 rounded-full bg-emerald-500 shadow-[0_0_6px_rgba(16,185,129,0.8)]" />
-                  Corporate Payroll Settlement
-                </td>
-                <td className="py-3 px-4 font-mono-numbers text-white">42</td>
-                <td className="py-3 px-4 font-mono-numbers text-slate-300">612</td>
-                <td className="py-3 px-4 font-mono-numbers font-bold text-white">₹31.4 Cr</td>
-                <td className="py-3 px-4">
-                  <span className="px-2.5 py-0.5 rounded-full text-[10px] font-mono font-semibold bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">
-                    Monitored Normal
-                  </span>
-                </td>
-                <td className="py-3 px-4 text-slate-400 font-mono text-[11px]">5 min ago</td>
-                <td className="py-3 px-4 text-right">
-                  <span className="text-slate-400 font-semibold hover:text-white">View Details →</span>
-                </td>
-              </tr>
-            </tbody>
-          </table>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-slate-300 text-[11px]">
+            <div>
+              <span className="text-slate-400 font-mono block">EXEMPTION REASONING:</span>
+              <ul className="space-y-1 mt-1">
+                <li>&bull; <strong className="text-white">Recurring merchant settlement pattern</strong> with regular EOD settlement cycles</li>
+                <li>&bull; <strong className="text-white">Consistent counterparties</strong> with 24+ months of continuous trade history</li>
+                <li>&bull; <strong className="text-white">Stable transaction intervals</strong> occurring on weekdays between 23:30–23:59 IST</li>
+                <li>&bull; <strong className="text-white">No circular fund movement detected</strong> across all 5 federated inter-bank ledgers</li>
+              </ul>
+            </div>
+            <div className="neu-inset-sm p-3 rounded-xl font-mono text-[10px] space-y-1 text-slate-400">
+              <div>Entity: Reliance Retail Wholesale Settlement Ledgers</div>
+              <div>Monthly Flow: ₹342.8 Cr • Direct Counterparties: 148 Verified Vendors</div>
+              <div>Statutory KYC: Audited MCA Filings + GST E-Way Bill Cross-Validation</div>
+              <div className="text-emerald-400 font-semibold pt-1">
+                &check; Machine Learning Classifier Confidence: 99.1% Legitimate Commercial Flow
+              </div>
+            </div>
+          </div>
         </div>
       </div>
 
-      {/* 5. Recent Active Investigations */}
+      {/* 7. Active Investigation Dossiers (Featuring CASE #INV-2026-0173) */}
       <div className="neu-card overflow-hidden">
         <div className="p-4 border-b border-white/[0.06] flex items-center justify-between">
           <div>
@@ -448,23 +610,27 @@ export const DashboardPage: React.FC = () => {
               </tr>
             </thead>
             <tbody className="divide-y divide-white/[0.04]">
+              {/* Highlighted Case #INV-2026-0173 from Prompt 9 */}
               <tr 
-                onClick={() => handleOpenCase('scenario-c-circular', 'FG-2026-001')}
-                className="hover:bg-white/[0.03] cursor-pointer transition-colors"
+                onClick={() => handleOpenCase('scenario-c-circular', 'INV-2026-0173')}
+                className="hover:bg-blue-500/10 cursor-pointer transition-colors bg-blue-500/5"
               >
-                <td className="py-3 px-4 font-mono font-bold text-blue-400">FG-2026-0142</td>
-                <td className="py-3 px-4 font-semibold text-white">Circular Fund Routing & Tax Avoidance</td>
-                <td className="py-3 px-4 font-mono-numbers text-slate-300">3 Banks</td>
-                <td className="py-3 px-4 font-mono-numbers text-slate-300">8 Entities</td>
+                <td className="py-3 px-4 font-mono font-extrabold text-blue-400">INV-2026-0173</td>
+                <td className="py-3 px-4 font-bold text-white flex items-center gap-2">
+                  <span className="w-2 h-2 rounded-full bg-red-500 animate-pulse" />
+                  <span>Suspicious Network #173 (Circular + Rapid Pass-Through)</span>
+                </td>
+                <td className="py-3 px-4 font-mono-numbers text-slate-300">5 Banks</td>
+                <td className="py-3 px-4 font-mono-numbers text-slate-300">27 Accounts</td>
                 <td className="py-3 px-4">
-                  <span className="px-2.5 py-0.5 rounded-full text-[10px] font-mono font-semibold bg-red-500/20 text-red-400 border border-red-500/30">
-                    High Risk
+                  <span className="px-2.5 py-0.5 rounded-full text-[10px] font-mono font-bold bg-red-500/20 text-red-400 border border-red-500/30">
+                    CRITICAL (₹4.82 Cr)
                   </span>
                 </td>
-                <td className="py-3 px-4 text-slate-300">Under Review</td>
-                <td className="py-3 px-4 text-slate-400 font-mono text-[11px]">12 min ago</td>
+                <td className="py-3 px-4 text-emerald-400 font-semibold">Active Investigation</td>
+                <td className="py-3 px-4 text-slate-400 font-mono text-[11px]">4 mins ago</td>
                 <td className="py-3 px-4 text-right">
-                  <span className="text-blue-400 font-semibold hover:underline">Open Workspace →</span>
+                  <span className="text-blue-400 font-bold hover:underline">Open Workspace &rarr;</span>
                 </td>
               </tr>
 
@@ -472,19 +638,19 @@ export const DashboardPage: React.FC = () => {
                 onClick={() => handleOpenCase('scenario-b-rapid', 'FG-2026-002')}
                 className="hover:bg-white/[0.03] cursor-pointer transition-colors"
               >
-                <td className="py-3 px-4 font-mono font-bold text-blue-400">FG-2026-0138</td>
-                <td className="py-3 px-4 font-semibold text-white">Rapid Pass-Through Shell Network</td>
+                <td className="py-3 px-4 font-mono font-bold text-blue-400">FG-2026-002</td>
+                <td className="py-3 px-4 font-semibold text-white">Linear Multi-Hop Mule Conduit Ring</td>
                 <td className="py-3 px-4 font-mono-numbers text-slate-300">4 Banks</td>
-                <td className="py-3 px-4 font-mono-numbers text-slate-300">15 Entities</td>
+                <td className="py-3 px-4 font-mono-numbers text-slate-300">12 Entities</td>
                 <td className="py-3 px-4">
                   <span className="px-2.5 py-0.5 rounded-full text-[10px] font-mono font-semibold bg-amber-500/20 text-amber-400 border border-amber-500/30">
-                    Medium Risk
+                    High Risk
                   </span>
                 </td>
-                <td className="py-3 px-4 text-slate-300">Open Case</td>
-                <td className="py-3 px-4 text-slate-400 font-mono text-[11px]">34 min ago</td>
+                <td className="py-3 px-4 text-slate-300">Active Investigation</td>
+                <td className="py-3 px-4 text-slate-400 font-mono text-[11px]">34 mins ago</td>
                 <td className="py-3 px-4 text-right">
-                  <span className="text-blue-400 font-semibold hover:underline">Open Workspace →</span>
+                  <span className="text-blue-400 font-semibold hover:underline">Open Workspace &rarr;</span>
                 </td>
               </tr>
 
@@ -492,19 +658,19 @@ export const DashboardPage: React.FC = () => {
                 onClick={() => handleOpenCase('scenario-d-smurfing', 'FG-2026-003')}
                 className="hover:bg-white/[0.03] cursor-pointer transition-colors"
               >
-                <td className="py-3 px-4 font-mono font-bold text-blue-400">FG-2026-0131</td>
-                <td className="py-3 px-4 font-semibold text-white">Multiple Small-Value Mule Funnels</td>
-                <td className="py-3 px-4 font-mono-numbers text-slate-300">2 Banks</td>
-                <td className="py-3 px-4 font-mono-numbers text-slate-300">27 Entities</td>
+                <td className="py-3 px-4 font-mono font-bold text-blue-400">FG-2026-003</td>
+                <td className="py-3 px-4 font-semibold text-white">Sub-Threshold Fan-In Smurfing Cluster</td>
+                <td className="py-3 px-4 font-mono-numbers text-slate-300">3 Banks</td>
+                <td className="py-3 px-4 font-mono-numbers text-slate-300">24 Entities</td>
                 <td className="py-3 px-4">
-                  <span className="px-2.5 py-0.5 rounded-full text-[10px] font-mono font-semibold bg-amber-500/20 text-amber-400 border border-amber-500/30">
-                    Medium Risk
+                  <span className="px-2.5 py-0.5 rounded-full text-[10px] font-mono font-semibold bg-cyan-500/20 text-cyan-400 border border-cyan-500/30">
+                    High Risk
                   </span>
                 </td>
-                <td className="py-3 px-4 text-slate-300">Open Case</td>
+                <td className="py-3 px-4 text-slate-300">Escalated to FIU</td>
                 <td className="py-3 px-4 text-slate-400 font-mono text-[11px]">2 hours ago</td>
                 <td className="py-3 px-4 text-right">
-                  <span className="text-blue-400 font-semibold hover:underline">Open Workspace →</span>
+                  <span className="text-blue-400 font-semibold hover:underline">Open Workspace &rarr;</span>
                 </td>
               </tr>
             </tbody>
