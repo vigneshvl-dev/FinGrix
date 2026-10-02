@@ -187,6 +187,15 @@ export const DataSourcesPage: React.FC = () => {
                     </>
                   )}
                 </button>
+
+                <a
+                  href="/sample_transaction_logs.csv"
+                  download="sample_transaction_logs.csv"
+                  className="neu-btn px-4 py-2.5 rounded-xl text-xs font-semibold text-slate-300 hover:text-white flex items-center gap-1.5 transition"
+                >
+                  <FileText className="w-3.5 h-3.5 text-cyan-400" />
+                  <span>Download Sample CSV</span>
+                </a>
               </div>
             </div>
 
